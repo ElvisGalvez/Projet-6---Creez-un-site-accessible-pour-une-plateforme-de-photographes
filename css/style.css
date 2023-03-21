@@ -47,6 +47,7 @@ h1 {
 .photographer_section article img {
     height: 200px;
     width: 200px;
+    overflow-clip-margin: unset;
+    border-radius: 100px;
+    object-fit: cover;
 }
-
-/*test github*/
