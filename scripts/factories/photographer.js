@@ -5,24 +5,24 @@ function photographerFactory(data) {
 
     function getUserCardDOM() {
         // Sélectionne le modèle d'article vide à cloner
-        const template = document.querySelector('#photographer-template');
+        const template = document.querySelector('#photographer_template');
 
         // Clone le modèle
         const article = template.content.cloneNode(true);
 
         // Modifie le contenu de l'article cloné
-        const link = article.querySelector('.photographer-link');
+        const link = article.querySelector('.photographer_link');
         link.setAttribute('aria-label', `Voir le profil de ${name}`);
-        const img = link.querySelector('.photographer-image');
+        const img = link.querySelector('.photographer_image');
         img.setAttribute('src', picture);
         img.setAttribute('alt', `photo de ${name}`);
 
-        const photographerName = link.querySelector('.photographer-name');
+        const photographerName = link.querySelector('.photographer_name');
         photographerName.textContent = name;
 
-        article.querySelector('.photographer-location').textContent = `${city}, ${country}`;
-        article.querySelector('.photographer-price').textContent = `${price}€/jour`;
-        article.querySelector('.photographer-tagline').textContent = tagline;
+        article.querySelector('.photographer_location').textContent = `${city}, ${country}`;
+        article.querySelector('.photographer_price').textContent = `${price}€/jour`;
+        article.querySelector('.photographer_tagline').textContent = tagline;
 
         return article;
     }
