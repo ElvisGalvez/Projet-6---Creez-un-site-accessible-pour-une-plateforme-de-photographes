@@ -10,7 +10,7 @@ function getPhotographerIdFromUrl() {
   return urlParams.get('id');
 }
 
-async function init() {
+async function initPhotographer() {
   const photographerId = getPhotographerIdFromUrl();
 
   if (photographerId) {
@@ -19,6 +19,7 @@ async function init() {
     console.log(photographer);
 
     const photographerInfo = document.querySelector('.photographer_info');
+    const photographerImg = document.querySelector('.photographer_img');
 
     photographerInfo.innerHTML = `
       <h1 class="photographer_name">${photographer.name}</h1>
@@ -30,10 +31,10 @@ async function init() {
     photographerPortrait.className = "photographer_portrait";
     photographerPortrait.src = `assets/photographers/${photographer.portrait}`;
     photographerPortrait.alt = `Photo de ${photographer.name}`;
-    photographerInfo.appendChild(photographerPortrait);
+    photographerImg.appendChild(photographerPortrait);
   } else {
     console.log('No photographer ID found in URL');
   }
 }
 
-init();
+initPhotographer();

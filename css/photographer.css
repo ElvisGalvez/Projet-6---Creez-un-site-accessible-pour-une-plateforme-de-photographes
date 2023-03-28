@@ -1,77 +1,56 @@
-#contact_modal {
-    display: none;
+body {
+  font-family: "DM Sans", sans-serif;
+  margin: 0 100px;
 }
 
-.photograph-header {
-    background-color: #FAFAFA;
-    height: 300px;
-    margin: 0 100px;
+header .logo {
+  width: 20%;
+}
+
+.photographer_header {
+  display: flex;
+  background-color: #FAFAFA;
+  justify-content: space-around;
+  align-items: center;
+  height: 313px;
+}
+
+.photographer_info {
+  display: flex;
+  flex-direction: column;
+}
+.photographer_info .photographer_name {
+  color: #D3573C;
+  font-size: 36px;
+  font-size: 64px;
+  margin: 0;
+}
+.photographer_info .photographer_location {
+  color: #901C1C;
+  font-size: 24px;
+  margin: 0;
+}
+.photographer_info .photographer_tagline {
+  font-size: 18px;
+  margin: 0;
+  color: #525252;
+  margin: 10px 0px 0px 0px;
 }
 
 .contact_button {
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-    padding: 11px;
-    width: 170px;
-    height: 70px;
-    border: none;
-    background-color: #901C1C;
-    border-radius: 5px;
-    cursor: pointer;
+  background-color: #901C1C;
+  color: white;
+  height: 50px;
+  width: 150px;
+  border-radius: 5px;
+  font-size: 19px;
 }
 
-.modal {
-    border-radius: 5px;
-    background-color: #DB8876;
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 35px;
-    margin: auto;
-}
-
-.modal header {
-    justify-content: space-between;
-    width: 100%;
-}
-
-.modal header img {
-    cursor: pointer;
-}
-
-.modal header h2 {
-    font-size: 64px;
-    font-weight: normal;
-    text-align: center;
-}
-
-form {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-form label {
-    color: #312E2E;
-    font-size: 36px;
-}
-
-form div {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: self-start;
-    margin-bottom: 26px;
-}
-
-form input {
-    width: 100%;
-    height: 68px;
-    border: none;
-    border-radius: 5px;
-}
-
+.photographer_img img {
+  height: 200px;
+  width: 200px;
+  overflow-clip-margin: unset;
+  border-radius: 100px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}/*# sourceMappingURL=photographer.css.map */

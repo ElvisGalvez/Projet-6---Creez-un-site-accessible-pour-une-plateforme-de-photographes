@@ -19,9 +19,9 @@ async function displayData(photographers) {
   }
 }
 
-async function init() {
+async function initIndex() {
   const { photographers } = await getPhotographers();
   displayData(photographers);
 }
 
-init();
+initIndex();
