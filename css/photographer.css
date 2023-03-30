@@ -53,4 +53,32 @@ header .logo {
   border-radius: 100px;
   -o-object-fit: cover;
      object-fit: cover;
+}
+
+.box_container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #DB8876;
+  color: white;
+  padding: 10px;
+  z-index: 1;
+  width: 306px;
+  height: 59px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  color: black;
+  font-size: 24px;
+}
+.box_container #like_section {
+  display: flex;
+  align-items: center;
+}
+.box_container #like_section .heart_icon {
+  padding: 0px 0px 0px 10px;
+}
+
+#contact_modal {
+  display: none;
 }/*# sourceMappingURL=photographer.css.map */

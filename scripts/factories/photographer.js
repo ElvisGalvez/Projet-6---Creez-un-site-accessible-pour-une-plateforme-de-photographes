@@ -29,47 +29,5 @@ function photographerFactory(data) {
     return { getUserCardDOM };
 }
 
-function mediaFactory(data) {
-  const { id, photographerId, title, image, video, alt, likes, date, price } = data;
 
-  function getMediaDOM() {
-    const mediaElement = document.createElement("div");
-    mediaElement.classList.add("media_item");
 
-    if (image) {
-      const img = document.createElement("img");
-      img.src = `assets/images/${image}`;
-      img.alt = alt;
-      mediaElement.appendChild(img);
-    } else if (video) {
-      const videoElement = document.createElement("video");
-      videoElement.src = `assets/videos/${video}`;
-      videoElement.controls = true;
-      mediaElement.appendChild(videoElement);
-    }
-
-    const mediaInfo = document.createElement("div");
-    mediaInfo.classList.add("media_info");
-    mediaInfo.innerHTML = `
-      <p class="media_title">${title}</p>
-      <p class="media_likes">${likes}</p>
-      <p class="media_price">${price}€</p>
-    `;
-    mediaElement.appendChild(mediaInfo);
-
-    return mediaElement;
-  }
-
-  return {
-    id,
-    photographerId,
-    title,
-    image,
-    video,
-    alt,
-    likes,
-    date,
-    price,
-    getMediaDOM
-  }
-}

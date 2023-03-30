@@ -62,3 +62,33 @@ height: 313px;
             object-fit: cover;
         }
     }
+
+    .box_container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #DB8876;
+        color: white;
+        padding: 10px;
+        z-index: 1;
+        width: 306px;
+        height: 59px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        color: black;
+        font-size: 24px;
+
+        #like_section{
+            display: flex;
+            align-items: center;
+
+            .heart_icon{
+                padding: 0px 0px 0px 10px;
+            }
+        }
+      }
+
+      #contact_modal {
+        display: none;
+      }
