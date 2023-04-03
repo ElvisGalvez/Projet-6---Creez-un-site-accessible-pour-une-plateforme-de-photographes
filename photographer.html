@@ -1,52 +1,55 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link href="css/photographer.css" rel="stylesheet" type="text/css" />
-    <meta charset="utf-8">
-    <link rel="icon" type="image/png" href="assets/favicon.png">
-    <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/6f51db609b.js" crossorigin="anonymous"></script>
-    <title>Fisheye - photographe </title>
-  </head>
-  <body>
-    <header>
-      <img src="assets/images/logo.png" class="logo" />
-    </header>
-    <main id="main">
-      <div class="photographer_header">
-        <div class="photographer_info"></div>
-        <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
-        <div class="photographer_img"></div>
-      </div>
+
+<head>
+  <link href="css/photographer.css" rel="stylesheet" type="text/css" />
+  <meta charset="utf-8">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/6f51db609b.js" crossorigin="anonymous"></script>
+  <title>Fisheye - photographe </title>
+</head>
+
+<body>
+  <header>
+    <img src="assets/images/logo.png" class="logo" />
+  </header>
+  <main id="main">
+    <div class="photographer_header">
+      <div class="photographer_info"></div>
+      <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+      <div class="photographer_img"></div>
+    </div>
+
       <div class="media_gallery"></div>
 
-      <div class="box_container">
+    <div class="box_container">
       <div id="like_section">
         <p id="like_count">297 081</p>
         <i class="heart_icon fa-solid fa-heart"></i>
       </div>
-        <p id="price"></p>
+      <p id="price"></p>
     </div>
-    </main>
-    <div id="contact_modal">
-			<div class="modal">
-				<header>
-          <h2>Contactez-moi</h2>
-          <img src="assets/icons/close.svg" onclick="closeModal()" />
-        </header>
-				<form>
-					<div>
-						<label>Prénom</label>
-						<input />
-					</div>
-          <button class="contact_button">Envoyer</button>
-				</form>
-			</div>
-		</div>
-    <script type="module" src="scripts/pages/photographerPage.js"></script>
-    <script type="module" src="scripts/utils/contactForm.js"></script>
-    <script type="module" src="scripts/factories/photographer.js"></script>
-    <script type="module" src="scripts/factories/mediaFactory.js"></script>
-  </body>
-</html>
+  </main>
+  <div id="contact_modal">
+    <div class="modal">
+      <header>
+        <h2>Contactez-moi</h2>
+        <img src="assets/icons/close.svg" onclick="closeModal()" />
+      </header>
+      <form>
+        <div>
+          <label>Prénom</label>
+          <input />
+        </div>
+        <button class="contact_button">Envoyer</button>
+      </form>
+    </div>
+  </div>
+  <script src="scripts/utils/contactForm.js"></script>
+  <script type="module" src="scripts/pages/photographerPage.js"></script>
+  <script type="module" src="scripts/factories/photographer.js"></script>
+  <script type="module" src="scripts/factories/mediaFactory.js"></script>
+</body>
 
+</html>

@@ -79,6 +79,23 @@ header .logo {
   padding: 0px 0px 0px 10px;
 }
 
+.media_gallery {
+  margin: 45px 0px 0px 0px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.media_item img,
+.media_item video {
+  width: 350px;
+  height: 300px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  margin: 5px;
+  overflow-clip-margin: unset;
+}
+
 #contact_modal {
   display: none;
 }/*# sourceMappingURL=photographer.css.map */
