@@ -1,22 +1,27 @@
-export function mediaFactory(data, photographers) {
+export function mediaFactory(data, photographers, photographer) {
   const { id, photographerId, title, image, video, likes, date, price } = data;
 
   function getPhotographerFirstNameById(photographers, id) {
     const photographer = photographers.find((p) => p.id === id);
-    return photographer.name.split(' ')[0];
+    return photographer.name.split(' ')[0].replace(' ', '_');
+  }
+
+  function getPhotographerFolderName(photographerName) {
+    return photographerName.replace(/ /g, '_');
   }
 
   function getMediaDOM() {
     const mediaElement = document.createElement("div");
     mediaElement.classList.add("media_item");
-
+  
     const photographerFirstName = getPhotographerFirstNameById(photographers, photographerId);
+    const photographerFolderName = photographerFirstName.replace(' ', '_');
     const mediaSrc = image
-      ? `assets/photosVideos/${photographerFirstName}/${encodeURIComponent(image)}`
-      : `assets/photosVideos/${photographerFirstName}/${encodeURIComponent(video)}`;
+      ? `assets/photosVideos/${photographerFolderName}/${encodeURIComponent(image)}`
+      : `assets/photosVideos/${photographerFolderName}/${encodeURIComponent(video)}`;
     const fileType = image ? "img" : "video";
     console.log("Generated mediaSrc:", mediaSrc);
-
+  
     if (fileType === "img") {
       const img = document.createElement("img");
       img.src = mediaSrc;
@@ -28,7 +33,7 @@ export function mediaFactory(data, photographers) {
       videoElement.controls = true;
       mediaElement.appendChild(videoElement);
     }
-
+  
     return mediaElement;
   }
 

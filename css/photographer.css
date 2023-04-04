@@ -98,4 +98,61 @@ header .logo {
 
 #contact_modal {
   display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+#contact_modal .close_icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+#contact_modal label {
+  font-size: 25px;
+}
+#contact_modal .modal {
+  position: absolute;
+  height: 750px;
+  width: 650px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #DB8876;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.close_container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+#contact_modal .close_icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
+.modal input[type=text],
+.modal input[type=email] {
+  width: 100%;
+  box-sizing: border-box;
+  height: 40px;
+}
+
+.modal textarea {
+  width: 100%;
+  box-sizing: border-box;
+  height: 200px;
 }/*# sourceMappingURL=photographer.css.map */
