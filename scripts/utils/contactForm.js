@@ -1,5 +1,4 @@
-const photographerNameElement = document.getElementById("photographer_name");
-photographerNameElement.textContent = photographer.name;
+
 
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("contact_button").addEventListener("click", function () {
@@ -37,4 +36,13 @@ const message = document.getElementById("message").value.trim();
       modal.style.display = "none";
     }
   });
+
+  function setPhotographerNameInModal(name) {
+    const photographerNameModal = document.getElementById("photographer_name_modal");
+    if (photographerNameModal) {
+      photographerNameModal.textContent = `${name}`;
+    } else {
+      console.log("Photographer name element in modal not found");
+    }
+  }
   

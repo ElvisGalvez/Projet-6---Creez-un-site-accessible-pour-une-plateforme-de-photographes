@@ -61,6 +61,8 @@ async function initPhotographer() {
       const priceText = document.createTextNode(`${photographer.price}€ / jour`);
       price.appendChild(priceText);
       likeBox.appendChild(price);
+
+      
     } else {
       console.log('Price element not found');
     }
