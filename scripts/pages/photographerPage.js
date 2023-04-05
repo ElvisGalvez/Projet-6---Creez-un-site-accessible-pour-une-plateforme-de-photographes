@@ -51,8 +51,8 @@ async function initPhotographer() {
         const mediaElement = mediaFactory(mediaData, data.photographers);
         mediaGallery.appendChild(mediaElement);
       }
-
       console.log(media)
+      
     } else {
       console.log('Media gallery element not found');
     }
@@ -71,5 +71,5 @@ async function initPhotographer() {
     console.log('No photographer ID found in URL');
   }
 }
-
+export { getData, getPhotographerById, getPhotographerIdFromUrl };
 initPhotographer();

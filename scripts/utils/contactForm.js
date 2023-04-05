@@ -37,12 +37,5 @@ const message = document.getElementById("message").value.trim();
     }
   });
 
-  function setPhotographerNameInModal(name) {
-    const photographerNameModal = document.getElementById("photographer_name_modal");
-    if (photographerNameModal) {
-      photographerNameModal.textContent = `${name}`;
-    } else {
-      console.log("Photographer name element in modal not found");
-    }
-  }
+  
   

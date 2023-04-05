@@ -13,18 +13,18 @@ export function mediaFactory(data, photographers, photographer) {
     const photographerFirstName = getPhotographerFirstNameById(photographers, photographerId);
     const photographerFolderName = photographerFirstName.replace('-', '_');
     const mediaSrc = image
-      ? `assets/photosVideos/${photographerFolderName}/${encodeURIComponent(image)}`
-      : `assets/photosVideos/${photographerFolderName}/${encodeURIComponent(video)}`;
+  ? `assets/photosVideos/${photographerFolderName}/${image}`
+  : `assets/photosVideos/${photographerFolderName}/${video}`;
     const fileType = image ? "img" : "video";
     console.log("Generated mediaSrc:", mediaSrc);
   
-    if (fileType === "img") {
-      const img = document.createElement("img");
+    if (fileType === 'img') {
+      const img = document.createElement('img');
       img.src = mediaSrc;
       img.alt = title;
       mediaElement.appendChild(img);
-    } else {
-      const videoElement = document.createElement("video");
+    } else if (fileType === 'video') {
+      const videoElement = document.createElement('video');
       videoElement.src = mediaSrc;
       videoElement.controls = true;
       mediaElement.appendChild(videoElement);
@@ -32,8 +32,6 @@ export function mediaFactory(data, photographers, photographer) {
   
     return mediaElement;
   }
-
-  
 
   return getMediaDOM();
 }
