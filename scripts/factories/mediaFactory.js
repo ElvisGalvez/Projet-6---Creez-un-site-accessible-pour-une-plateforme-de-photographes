@@ -6,16 +6,12 @@ export function mediaFactory(data, photographers, photographer) {
     return photographer.name.split(' ')[0].replace(' ', '_');
   }
 
-  function getPhotographerFolderName(photographerName) {
-    return photographerName.replace(/ /g, '_');
-  }
-
   function getMediaDOM() {
     const mediaElement = document.createElement("div");
     mediaElement.classList.add("media_item");
   
     const photographerFirstName = getPhotographerFirstNameById(photographers, photographerId);
-    const photographerFolderName = photographerFirstName.replace(' ', '_');
+    const photographerFolderName = photographerFirstName.replace('-', '_');
     const mediaSrc = image
       ? `assets/photosVideos/${photographerFolderName}/${encodeURIComponent(image)}`
       : `assets/photosVideos/${photographerFolderName}/${encodeURIComponent(video)}`;
