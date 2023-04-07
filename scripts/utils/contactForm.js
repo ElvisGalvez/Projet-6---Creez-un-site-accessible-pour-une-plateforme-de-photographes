@@ -37,5 +37,10 @@ const message = document.getElementById("message").value.trim();
     }
   });
 
+  export function setPhotographerNameInModal(photographerName) {
+    const photographerNameElement = document.getElementById('photographer_name_modal');
+    photographerNameElement.textContent = photographerName;
+  }
+
   
   

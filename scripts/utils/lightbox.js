@@ -1,8 +1,27 @@
+import { getData } from '/scripts/pages/photographerPage.js';
 import { getPhotographerById, getPhotographerIdFromUrl } from '/scripts/pages/photographerPage.js';
-
 
 let mediaList = [];
 let currentIndex = 0;
+
+function normalizeDirectoryName(name) {
+
+    return name.replace(/[^\w\s]/gi, '').replace(/\s+/g, '-').toLowerCase();
+  }
+  
+  function getPhotographerFirstNameById(photographers, id) {
+    const photographer = photographers.find((p) => p.id === id);
+    return photographer.name.split(' ')[0].replace(' ', '_');
+}
+
+function getMediaPath(media, photographerFirstName) {
+    const { image, video } = media;
+    const photographerFolderName = photographerFirstName.replace('-', '_');
+    const mediaFileName = image || video;
+    return `assets/photosVideos/${photographerFolderName}/${mediaFileName}`;
+}
+
+  
 
 function createLightbox() {
     const lightbox = document.createElement('div');
@@ -40,45 +59,32 @@ function createLightbox() {
     lightboxContainer.appendChild(lightboxNext);
 }
 
-function attachLightboxListeners() {
-    const lightboxClose = document.getElementById('lightbox_close');
-    lightboxClose.addEventListener('click', closeLightbox);
 
-    const lightboxPrev = document.getElementById('lightbox_prev');
-    lightboxPrev.addEventListener('click', previousMedia);
-
-    const lightboxNext = document.getElementById('lightbox_next');
-    lightboxNext.addEventListener('click', nextMedia);
-
-    document.addEventListener('keydown', (e) => {
-        if (lightbox.style.display === 'block') {
-            if (e.key === 'ArrowLeft') {
-                previousMedia();
-            } else if (e.key === 'ArrowRight') {
-                nextMedia();
-            }
-        }
-    });
-}
-
-function updateLightboxContent() {
+async function updateLightboxContent() {
     const lightbox = document.getElementById('lightbox');
     const content = lightbox.querySelector('.lightbox_content');
 
     const media = mediaList[currentIndex];
+    const data = await getData();
+    const photographerFirstName = getPhotographerFirstNameById(data.photographers, media.photographerId);
+    const mediaPath = getMediaPath(media, photographerFirstName);
+
+    console.log(mediaPath);
+
     if (media.image) {
         const img = document.createElement('img');
-        img.src = `assets/images/${media.image}`;
+        img.src = mediaPath;
         img.alt = media.alt;
         content.innerHTML = '';
         content.appendChild(img);
     } else if (media.video) {
         const video = document.createElement('video');
-        video.src = `assets/images/${media.video}`;
+        video.src = mediaPath;
         video.controls = true;
         content.innerHTML = '';
         content.appendChild(video);
     }
+
 }
 
 function openLightbox(index) {
@@ -87,26 +93,6 @@ function openLightbox(index) {
 
     const lightbox = document.getElementById('lightbox');
     lightbox.style.display = 'block';
-}
-
-function closeLightbox() {
-    const lightbox = document.getElementById('lightbox');
-    lightbox.style.display = 'none';
-}
-
-function previousMedia() {
-    const newIndex = currentIndex - 1;
-    if (newIndex >= 0) {
-        currentIndex = newIndex;
-        updateLightboxContent();
-    }
-}
-
-function nextMedia() {
-    const newIndex = currentIndex + 1;
-    if (newIndex < mediaList.length) {
-        openLightbox(newIndex);
-    }
 }
 
 async function initLightbox() {
@@ -125,27 +111,47 @@ async function initLightbox() {
                     const index = Array.from(mediaGallery.children).indexOf(target);
                     openLightbox(index);
                 }
-                console.log('Prev button:', prevButton);
-                console.log('Next button:', nextButton);
-                console.log('Close button:', closeButton);
-                console.log('Media gallery:', mediaGallery);
             });
         }
 
         const prevButton = document.getElementById('lightbox_prev');
         const nextButton = document.getElementById('lightbox_next');
         const closeButton = document.getElementById('lightbox_close');
-        prevButton.addEventListener('click', previousMedia);
-        nextButton.addEventListener('click', nextMedia);
-        closeButton.addEventListener('click', closeLightbox);
+        prevButton.addEventListener('click', () => {
+            const newIndex = currentIndex - 1;
+            if (newIndex >= 0) {
+                currentIndex = newIndex;
+                updateLightboxContent();
+            }
+        });
+        nextButton.addEventListener('click', () => {
+            const newIndex = currentIndex + 1;
+            if (newIndex < mediaList.length) {
+                currentIndex = newIndex;
+                updateLightboxContent();
+            }
+        });
+        closeButton.addEventListener('click', () => {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.style.display = 'none';
+        });
 
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft') {
-                previousMedia();
+                const newIndex = currentIndex - 1;
+                if (newIndex >= 0) {
+                    currentIndex = newIndex;
+                    updateLightboxContent();
+                }
             } else if (e.key === 'ArrowRight') {
-                nextMedia();
+                const newIndex = currentIndex + 1;
+                if (newIndex < mediaList.length) {
+                    currentIndex = newIndex;
+                    updateLightboxContent();
+                }
             } else if (e.key === 'Escape') {
-                closeLightbox();
+                const lightbox = document.getElementById('lightbox');
+                lightbox.style.display = 'none';
             }
         });
     }

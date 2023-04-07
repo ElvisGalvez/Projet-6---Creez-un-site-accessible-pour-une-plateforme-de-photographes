@@ -1,17 +1,19 @@
+export function getPhotographerFirstNameById(photographers, id) {
+  const photographer = photographers.find((p) => p.id === id);
+  return photographer.name.split(' ')[0].replace(' ', '_');
+}
+
 export function mediaFactory(data, photographers, photographer) {
   const { id, photographerId, title, image, video, likes, date, price } = data;
-
-  function getPhotographerFirstNameById(photographers, id) {
-    const photographer = photographers.find((p) => p.id === id);
-    return photographer.name.split(' ')[0].replace(' ', '_');
-  }
 
   function getMediaDOM() {
     const mediaElement = document.createElement("div");
     mediaElement.classList.add("media_item");
   
     const photographerFirstName = getPhotographerFirstNameById(photographers, photographerId);
+    console.log('Photographer first name:', photographerFirstName);
     const photographerFolderName = photographerFirstName.replace('-', '_');
+    console.log('Photographer folder name:', photographerFolderName);
     const mediaSrc = image
   ? `assets/photosVideos/${photographerFolderName}/${image}`
   : `assets/photosVideos/${photographerFolderName}/${video}`;
