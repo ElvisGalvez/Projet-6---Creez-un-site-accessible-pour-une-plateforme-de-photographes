@@ -1,4 +1,5 @@
 import { mediaFactory } from '/scripts/factories/mediaFactory.js';
+import { setPhotographerNameInModal } from '/scripts/utils/contactForm.js';
 
 async function getData() {
   const response = await fetch('/data/photographers.json');
@@ -23,9 +24,11 @@ async function initPhotographer() {
 
   if (photographerId) {
     console.log(`Photographer ID: ${photographerId}`);
-    const data = await getData(); 
+    const data = await getData();
     const { photographer, media } = await getPhotographerById(photographerId);
     console.log(photographer);
+
+    setPhotographerNameInModal(photographer.name);
 
     const photographerInfo = document.querySelector('.photographer_info');
     const photographerImg = document.querySelector('.photographer_img');
