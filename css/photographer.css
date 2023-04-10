@@ -98,17 +98,13 @@ header .logo {
 
 .media_item {
   position: relative;
+  margin: 20px 0px 20px 0px;
 }
 
 .media_info {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  color: white;
   font-weight: bold;
   display: flex;
   justify-content: space-between;
-  width: 100%;
 }
 
 .media_title {

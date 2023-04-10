@@ -3,7 +3,7 @@ export function getPhotographerFirstNameById(photographers, id) {
   return photographer.name.split(' ')[0].replace(' ', '_');
 }
 
-export function mediaFactory(data, photographers, photographer) {
+export function mediaFactory(data, photographers) {
   const { id, photographerId, title, image, video, likes, date, price } = data;
 
   function getMediaDOM() {
@@ -32,6 +32,11 @@ export function mediaFactory(data, photographers, photographer) {
       mediaElement.appendChild(videoElement);
     }
   
+    const mediaWrapper = document.createElement("div");
+    mediaWrapper.classList.add("media_wrapper");
+
+    mediaWrapper.appendChild(mediaElement);
+
     const mediaInfo = document.createElement('div');
     mediaInfo.className = 'media_info';
     
@@ -42,14 +47,15 @@ export function mediaFactory(data, photographers, photographer) {
 
     const mediaLikes = document.createElement('div');
     mediaLikes.className = 'media_likes';
+    mediaLikes.setAttribute('data-id', id);
     mediaLikes.innerHTML = `
-      <p>${likes} <i class="heart_icon fa-solid fa-heart"></i></p>
+      <p><span class="likes_count">${likes}</span> <i class="heart_icon fa-solid fa-heart"></i></p>
     `;
     mediaInfo.appendChild(mediaLikes);
 
-    mediaElement.appendChild(mediaInfo);
+    mediaWrapper.appendChild(mediaInfo);
 
-    return mediaElement;
+    return mediaWrapper;
   }
 
   return getMediaDOM();
