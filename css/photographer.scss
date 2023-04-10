@@ -105,6 +105,38 @@ header {
     overflow-clip-margin: unset;
 }
 
+
+
+.media_item {
+    position: relative; //a modifier
+  }
+  
+  .media_info {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .media_title {
+    margin-bottom: 5px;
+  }
+  
+  .media_likes {
+    margin-right: 10px;
+  }
+  
+  .heart_icon {
+    margin-left: 5px;
+  }
+
+
+// contact modal
+
 #contact_modal {
     display: none;
     position: fixed;
@@ -182,7 +214,7 @@ header {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(255, 255, 255, 1); // Fond blanc opaque
+    background-color: rgba(255, 255, 255, 1); 
   }
   
   .lightbox_content {
@@ -190,8 +222,8 @@ header {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    max-width: 90%; // Augmentation de la largeur maximale
-    max-height: 90%; // Augmentation de la hauteur maximale
+    max-width: 90%; 
+    max-height: 90%; 
     padding: 20px;
   }
   
@@ -203,6 +235,18 @@ header {
     object-fit: contain;
     margin-bottom: 30px;
   }
+
+  .lightbox_content_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lightbox_title {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
   
   .lightbox_prev,
   .lightbox_next {

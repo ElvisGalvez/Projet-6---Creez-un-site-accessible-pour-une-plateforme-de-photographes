@@ -32,6 +32,23 @@ export function mediaFactory(data, photographers, photographer) {
       mediaElement.appendChild(videoElement);
     }
   
+    const mediaInfo = document.createElement('div');
+    mediaInfo.className = 'media_info';
+    
+    const mediaTitle = document.createElement('p');
+    mediaTitle.className = 'media_title';
+    mediaTitle.textContent = title;
+    mediaInfo.appendChild(mediaTitle);
+
+    const mediaLikes = document.createElement('div');
+    mediaLikes.className = 'media_likes';
+    mediaLikes.innerHTML = `
+      <p>${likes} <i class="heart_icon fa-solid fa-heart"></i></p>
+    `;
+    mediaInfo.appendChild(mediaLikes);
+
+    mediaElement.appendChild(mediaInfo);
+
     return mediaElement;
   }
 

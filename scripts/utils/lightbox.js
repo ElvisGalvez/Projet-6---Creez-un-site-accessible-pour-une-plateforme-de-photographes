@@ -34,9 +34,18 @@ function createLightbox() {
     lightboxClose.innerHTML = '&times;';
     lightbox.appendChild(lightboxClose);
 
+    const lightboxContentWrapper = document.createElement('div');
+    lightboxContentWrapper.classList.add('lightbox_content_wrapper');
+    lightbox.appendChild(lightboxContentWrapper);
+
     const lightboxContent = document.createElement('div');
     lightboxContent.classList.add('lightbox_content');
-    lightbox.appendChild(lightboxContent);
+    lightboxContentWrapper.appendChild(lightboxContent);
+
+    const lightboxTitle = document.createElement('div');
+    lightboxTitle.id = 'lightbox_title';
+    lightboxTitle.classList.add('lightbox_title');
+    lightboxContentWrapper.appendChild(lightboxTitle);
 
     const lightboxPrev = document.createElement('a');
     lightboxPrev.id = 'lightbox_prev';
@@ -57,6 +66,7 @@ function createLightbox() {
     lightboxContainer.appendChild(lightboxContent);
     lightboxContainer.appendChild(lightboxPrev);
     lightboxContainer.appendChild(lightboxNext);
+    lightboxContentWrapper.appendChild(lightboxTitle);
 }
 
 
@@ -84,7 +94,8 @@ async function updateLightboxContent() {
         content.innerHTML = '';
         content.appendChild(video);
     }
-
+    const lightboxTitle = document.getElementById('lightbox_title');
+    lightboxTitle.textContent = media.title;
 }
 
 function openLightbox(index) {

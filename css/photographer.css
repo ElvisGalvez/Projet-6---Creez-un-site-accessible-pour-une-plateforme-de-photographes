@@ -96,6 +96,33 @@ header .logo {
   overflow-clip-margin: unset;
 }
 
+.media_item {
+  position: relative;
+}
+
+.media_info {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.media_title {
+  margin-bottom: 5px;
+}
+
+.media_likes {
+  margin-right: 10px;
+}
+
+.heart_icon {
+  margin-left: 5px;
+}
+
 #contact_modal {
   display: none;
   position: fixed;
@@ -187,6 +214,18 @@ header .logo {
   -o-object-fit: contain;
      object-fit: contain;
   margin-bottom: 30px;
+}
+
+.lightbox_content_wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lightbox_title {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .lightbox_prev,
