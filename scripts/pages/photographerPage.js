@@ -1,4 +1,4 @@
-import { mediaFactory } from '/scripts/factories/mediaFactory.js';
+import { mediaFactory, updateTotalLikes } from '/scripts/factories/mediaFactory.js';
 import { setPhotographerNameInModal } from '/scripts/utils/contactForm.js';
 
 async function getData() {
@@ -35,6 +35,8 @@ async function initPhotographer() {
     const likeCount = document.querySelector('#like_count');
     const likeBox = document.querySelector('#like_box');
     const price = document.querySelector('#price');
+    
+    let totalLikes = 0;
 
     photographerInfo.innerHTML = `
       <h1 class="photographer_name">${photographer.name}</h1>
@@ -47,28 +49,28 @@ async function initPhotographer() {
     photographerPortrait.src = `assets/photographers/${photographer.portrait}`;
     photographerPortrait.alt = `Photo de ${photographer.name}`;
     photographerImg.appendChild(photographerPortrait);
-
     const mediaGallery = document.querySelector('.media_gallery');
+    
     if (mediaGallery) {
       for (let index = 0; index < media.length; index++) {
         const mediaData = media[index];
         const mediaElement = mediaFactory(mediaData, data.photographers, index);
         mediaGallery.appendChild(mediaElement);
+        totalLikes += mediaData.likes;
       }
       console.log(media);
+      updateTotalLikes(totalLikes - parseInt(likeCount.textContent, 10));
     } else {
       console.log('Media gallery element not found');
     }
 
     if (price) {
-      const priceText = document.createTextNode(`${photographer.price}€ / jour`);
-      price.appendChild(priceText);
-      likeBox.appendChild(price);
-
-      
+      price.textContent = `${photographer.price}€ / jour`;
     } else {
       console.log('Price element not found');
     }
+
+    likeCount.textContent = totalLikes;
 
   } else {
     console.log('No photographer ID found in URL');

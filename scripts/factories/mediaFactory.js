@@ -3,6 +3,23 @@ export function getPhotographerFirstNameById(photographers, id) {
   return photographer.name.split(' ')[0].replace(' ', '_');
 }
 
+function incrementLike(mediaLikes) {
+  const liked = mediaLikes.getAttribute('data-liked') === 'true';
+  if (!liked) {
+    const likesCountElement = mediaLikes.querySelector('.likes_count');
+    const currentLikes = parseInt(likesCountElement.textContent, 10);
+    likesCountElement.textContent = currentLikes + 1;
+    mediaLikes.setAttribute('data-liked', 'true');
+    updateTotalLikes(1);
+  }
+}
+
+function updateTotalLikes(change) {
+  const likeCountElement = document.querySelector('#like_count');
+  const currentTotalLikes = parseInt(likeCountElement.textContent, 10);
+  likeCountElement.textContent = currentTotalLikes + change;
+}
+
 export function mediaFactory(data, photographers, index) {
   const { id, photographerId, title, image, video, likes, date, price } = data;
 
@@ -49,10 +66,18 @@ mediaElement.setAttribute('data-index', index);
     const mediaLikes = document.createElement('div');
     mediaLikes.className = 'media_likes';
     mediaLikes.setAttribute('data-id', id);
+    mediaLikes.setAttribute('data-liked', 'false');
     mediaLikes.innerHTML = `
       <p><span class="likes_count">${likes}</span> <i class="heart_icon fa-solid fa-heart"></i></p>
     `;
     mediaInfo.appendChild(mediaLikes);
+
+    //ecouteur
+    mediaLikes.addEventListener('click', (e) => {
+      if (e.target.classList.contains('heart_icon')) {
+        incrementLike(mediaLikes);
+      }
+    });
 
     mediaWrapper.appendChild(mediaInfo);
 
@@ -61,3 +86,5 @@ mediaElement.setAttribute('data-index', index);
 
   return getMediaDOM();
 }
+
+export { updateTotalLikes };
