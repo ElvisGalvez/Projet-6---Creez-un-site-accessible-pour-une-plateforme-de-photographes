@@ -11,8 +11,13 @@ function normalizeDirectoryName(name) {
   
   function getPhotographerFirstNameById(photographers, id) {
     const photographer = photographers.find((p) => p.id === id);
-    return photographer.name.split(' ')[0].replace(' ', '_');
-}
+    if (photographer) {
+      return photographer.name.split(' ')[0].replace(' ', '_');
+    } else {
+      console.error(`Photographer not found for ID: ${id}`);
+      return 'unknown';
+    }
+  }
 
 function getMediaPath(media, photographerFirstName) {
     const { image, video } = media;
@@ -73,12 +78,20 @@ function createLightbox() {
 async function updateLightboxContent() {
     const lightbox = document.getElementById('lightbox');
     const content = lightbox.querySelector('.lightbox_content');
-
+  
     const media = mediaList[currentIndex];
+    if (!media || !media.photographerId) {
+      console.error('Invalid media object:', media);
+      return;
+    }
+  
     const data = await getData();
-    const photographerFirstName = getPhotographerFirstNameById(data.photographers, media.photographerId);
+    const photographerFirstName = getPhotographerFirstNameById(
+      data.photographers,
+      media.photographerId
+    );
     const mediaPath = getMediaPath(media, photographerFirstName);
-
+  
     console.log(mediaPath);
 
     if (media.image) {
@@ -111,19 +124,22 @@ async function initLightbox() {
     if (photographerId) {
         const { media } = await getPhotographerById(photographerId);
         mediaList = media;
+        console.log(mediaList);
 
         createLightbox();
 
         const mediaGallery = document.querySelector('.media_gallery');
-        if (mediaGallery) {
-            mediaGallery.addEventListener('click', (e) => {
-                const target = e.target.closest('.media_item');
-                if (target) {
-                    const index = Array.from(mediaGallery.children).indexOf(target);
-                    openLightbox(index);
-                }
-            });
+if (mediaGallery) {
+    mediaGallery.addEventListener("click", (e) => {
+        const target = e.target.closest(".media_item");
+        if (target) {
+            const index = parseInt(target.getAttribute("data-index"), 10);
+            console.log("Clicked media index:", index);
+            openLightbox(index);
         }
+    });
+}
+
 
         const prevButton = document.getElementById('lightbox_prev');
         const nextButton = document.getElementById('lightbox_next');

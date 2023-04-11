@@ -3,12 +3,13 @@ export function getPhotographerFirstNameById(photographers, id) {
   return photographer.name.split(' ')[0].replace(' ', '_');
 }
 
-export function mediaFactory(data, photographers) {
+export function mediaFactory(data, photographers, index) {
   const { id, photographerId, title, image, video, likes, date, price } = data;
 
   function getMediaDOM() {
     const mediaElement = document.createElement("div");
-    mediaElement.classList.add("media_item");
+mediaElement.classList.add("media_item");
+mediaElement.setAttribute('data-index', index);
   
     const photographerFirstName = getPhotographerFirstNameById(photographers, photographerId);
     console.log('Photographer first name:', photographerFirstName);

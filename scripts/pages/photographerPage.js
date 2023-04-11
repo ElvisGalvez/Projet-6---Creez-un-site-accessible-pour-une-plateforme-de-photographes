@@ -50,12 +50,12 @@ async function initPhotographer() {
 
     const mediaGallery = document.querySelector('.media_gallery');
     if (mediaGallery) {
-      for (const mediaData of media) {
-        const mediaElement = mediaFactory(mediaData, data.photographers);
+      for (let index = 0; index < media.length; index++) {
+        const mediaData = media[index];
+        const mediaElement = mediaFactory(mediaData, data.photographers, index);
         mediaGallery.appendChild(mediaElement);
       }
-      console.log(media)
-      
+      console.log(media);
     } else {
       console.log('Media gallery element not found');
     }
