@@ -71,10 +71,22 @@ async function initPhotographer() {
     }
 
     likeCount.textContent = totalLikes;
-
   } else {
     console.log('No photographer ID found in URL');
   }
+
+  initSort();
 }
-export { getData, getPhotographerById, getPhotographerIdFromUrl };
+
+function initSort() {
+  import('/scripts/utils/sort.js')
+    .then(({ applySort }) => {
+      applySort();
+    })
+    .catch((error) => {
+      console.error('Error importing applySort:', error);
+    });
+}
+
+export { getData, getPhotographerById, getPhotographerIdFromUrl, initPhotographer };
 initPhotographer();

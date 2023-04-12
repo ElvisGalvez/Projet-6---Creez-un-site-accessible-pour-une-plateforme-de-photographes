@@ -206,7 +206,7 @@ header .logo {
   display: flex;
 }
 
-#sort_select {
+#sort_button {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -215,8 +215,65 @@ header .logo {
   color: white;
   padding: 0.5rem 1rem;
   cursor: pointer;
+  width: 172px;
+  height: 48px;
+  text-align: left;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.sort_options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #901C1C;
+  color: white;
+  list-style: none;
+  padding: 0;
+  margin: 0;
   width: 170px;
-  height: 69px;
+  border: 1px solid #901C1C;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.sort_options li {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.sort_options li:hover,
+.sort_options li[aria-selected=true] {
+  background-color: #6a1717;
+}
+
+#sort_options li[aria-selected=true] {
+  display: none;
+}
+
+.sort_options li:not(:first-child)::before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 25%;
+  right: 25%;
+  top: 0;
+  height: 1px;
+  background-color: white;
+}
+
+.sort_options li:not(:last-child)::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 25%;
+  right: 25%;
+  top: 0;
+  height: 1px;
+  background-color: white;
 }
 
 .lightbox {
