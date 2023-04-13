@@ -20,13 +20,13 @@ function updateTotalLikes(change) {
   likeCountElement.textContent = currentTotalLikes + change;
 }
 
-export function mediaFactory(data, photographers, index) {
+export function mediaFactory(data, photographers) { 
   const { id, photographerId, title, image, video, likes, date, price } = data;
 
   function getMediaDOM() {
     const mediaElement = document.createElement("div");
-mediaElement.classList.add("media_item");
-mediaElement.setAttribute('data-index', index);
+    mediaElement.classList.add("media_item");
+    mediaElement.setAttribute('data-index', id);
   
     const photographerFirstName = getPhotographerFirstNameById(photographers, photographerId);
     console.log('Photographer first name:', photographerFirstName);

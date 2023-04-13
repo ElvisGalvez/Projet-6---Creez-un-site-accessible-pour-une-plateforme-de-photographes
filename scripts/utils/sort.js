@@ -13,27 +13,45 @@ function sortMedia(media, sortBy) {
   return media;
 }
 
-async function updateMediaGallery(sortedMedia) {
-    const mediaGallery = document.querySelector(".media_gallery");
-    if (mediaGallery) {
-      mediaGallery.innerHTML = "";
-      const data = await getData(); 
-      sortedMedia.forEach((mediaData, index) => {
-        const mediaElement = mediaFactory(mediaData, data.photographers, index);
-        mediaGallery.appendChild(mediaElement);
-      });
-    }
+function clearMediaGallery() {
+  const mediaGallery = document.querySelector('.media_gallery');
+  while (mediaGallery.firstChild) {
+    mediaGallery.removeChild(mediaGallery.firstChild);
   }
-
-export async function applySort() {
-  const photographerId = getPhotographerIdFromUrl();
-  const { media } = await getPhotographerById(photographerId);
-
-  const sortBy = sortButton.getAttribute("data-selected");
-  const sortedMedia = sortMedia(media, sortBy);
-
-  updateMediaGallery(sortedMedia);
 }
+
+async function updateMediaGallery(sortedMedia) {
+  const mediaGallery = document.querySelector(".media_gallery");
+  if (mediaGallery) {
+    mediaGallery.innerHTML = "";
+    const data = await getData();
+    sortedMedia.forEach((mediaData, index) => {
+      const mediaElement = mediaFactory(mediaData, data.photographers, index);
+      mediaElement.setAttribute("data-index", index); 
+      mediaGallery.appendChild(mediaElement);
+    });
+  }
+}
+
+  export async function applySort() {
+    const photographerId = getPhotographerIdFromUrl();
+    const { media } = await getPhotographerById(photographerId);
+  
+    const sortBy = sortButton.getAttribute("data-selected");
+    let sortedMedia = sortMedia(media, sortBy);
+    console.log('sortedMedia before', sortedMedia);
+
+    clearMediaGallery();
+  
+    sortedMedia = sortedMedia.map((media, index) => ({
+      ...media,
+      index,
+    }));
+  
+    console.log('sortedMedia after', sortedMedia);
+  
+    updateMediaGallery(sortedMedia);
+  }
 
 const sortButton = document.getElementById("sort_button");
 const sortOptions = document.getElementById("sort_options");
@@ -69,11 +87,11 @@ sortOptions.addEventListener("click", (event) => {
     sortArrow.classList.toggle("fa-chevron-up");
     optionItems.forEach(item => {
       item.addEventListener('click', () => {
-        applySort();
+ 
       });
     });
     selectedOption.setAttribute("aria-selected", "true");
-    applySort();
+
   }
   applySort();
 });
@@ -92,11 +110,11 @@ sortOptions.addEventListener("keydown", (event) => {
       sortArrow.classList.toggle("fa-chevron-up");
       optionItems.forEach(item => {
         item.addEventListener('click', () => {
-          applySort();
+   
         });
       });
       currentItem.setAttribute("aria-selected", "true");
-      applySort();
+     
 
     } else if (event.key === "ArrowUp") {
       event.preventDefault();

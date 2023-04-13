@@ -54,7 +54,7 @@ async function initPhotographer() {
     if (mediaGallery) {
       for (let index = 0; index < media.length; index++) {
         const mediaData = media[index];
-        const mediaElement = mediaFactory(mediaData, data.photographers, index);
+        const mediaElement = mediaFactory(mediaData, data.photographers); 
         mediaGallery.appendChild(mediaElement);
         totalLikes += mediaData.likes;
       }

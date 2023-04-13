@@ -101,10 +101,11 @@ header .logo {
 
 .media_item {
   position: relative;
-  margin: 20px 0px 20px 0px;
+  margin: 30px 0px 0px 0px;
 }
 
 .media_info {
+  color: #901C1C;
   font-weight: bold;
   display: flex;
   justify-content: space-between;
@@ -186,6 +187,7 @@ header .logo {
 .sort_wrapper {
   display: flex;
   align-items: center;
+  margin: 30px 0px 0px 0px;
 }
 
 .sort_select_wrapper {
@@ -220,6 +222,7 @@ header .logo {
   text-align: left;
   font-size: 17px;
   font-weight: 500;
+  border-radius: 3px;
 }
 
 .sort_options {
@@ -318,6 +321,7 @@ header .logo {
   margin-top: 10px;
   font-size: 16px;
   font-weight: bold;
+  color: #901C1C;
 }
 
 .lightbox_prev,
