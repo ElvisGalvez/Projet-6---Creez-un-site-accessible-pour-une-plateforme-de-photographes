@@ -5,11 +5,10 @@ let mediaList = [];
 let currentIndex = 0;
 
 function normalizeDirectoryName(name) {
-
     return name.replace(/[^\w\s]/gi, '').replace(/\s+/g, '-').toLowerCase();
-  }
-  
-  function getPhotographerFirstNameById(photographers, id) {
+}
+
+function getPhotographerFirstNameById(photographers, id) {
     const photographer = photographers.find((p) => p.id === id);
     if (photographer) {
       return photographer.name.split(' ')[0].replace(' ', '_');
@@ -17,7 +16,7 @@ function normalizeDirectoryName(name) {
       console.error(`Photographer not found for ID: ${id}`);
       return 'unknown';
     }
-  }
+}
 
 function getMediaPath(media, photographerFirstName) {
     const { image, video } = media;
@@ -51,6 +50,8 @@ function createLightbox() {
     lightboxTitle.id = 'lightbox_title';
     lightboxTitle.classList.add('lightbox_title');
     lightboxContentWrapper.appendChild(lightboxTitle);
+
+    
 
     const lightboxPrev = document.createElement('a');
     lightboxPrev.id = 'lightbox_prev';
@@ -112,76 +113,97 @@ async function updateLightboxContent() {
 }
 
 function openLightbox(index) {
-    currentIndex = index;
-    updateLightboxContent();
+    if (index >= 0 && index < mediaList.length) {
+      currentIndex = index;
+      updateLightboxContent();
+  
+      const lightbox = document.getElementById('lightbox');
+      lightbox.style.display = 'block';
+    } else {
+      console.error(`Invalid index: ${index}`);
+    }
+  }
 
-    const lightbox = document.getElementById('lightbox');
-    lightbox.style.display = 'block';
-}
-
-async function initLightbox() {
+  function sortMedia(media, sortBy) {
+    switch (sortBy) {
+      case 'likes':
+        return media.sort((a, b) => b.likes - a.likes);
+      case 'date':
+        return media.sort((a, b) => new Date(b.date) - new Date(a.date));
+      case 'title':
+        return media.sort((a, b) => a.title.localeCompare(b.title));
+      default:
+        console.error(`Invalid sort criterion: ${sortBy}`);
+        return media;
+    }
+  }
+  
+  async function initLightbox() {
     const photographerId = getPhotographerIdFromUrl();
     if (photographerId) {
-        const { media } = await getPhotographerById(photographerId);
-        mediaList = media;
-        console.log(mediaList);
-
-        createLightbox();
-
-        const mediaGallery = document.querySelector('.media_gallery');
-if (mediaGallery) {
-    mediaGallery.addEventListener("click", (e) => {
-        const target = e.target.closest(".media_item");
-        if (target) {
-            const index = parseInt(target.getAttribute("data-index"), 10);
-            console.log("Clicked media index:", index);
-            openLightbox(index);
+      const { media } = await getPhotographerById(photographerId);
+  
+      const sortedMedia = sortMedia(media, 'likes');
+  
+      mediaList = sortedMedia;
+  
+      createLightbox();
+  
+      const mediaGallery = document.querySelector('.media_gallery');
+      if (mediaGallery) {
+        mediaGallery.addEventListener("click", (e) => {
+          const target = e.target.closest(".media_item");
+          if (target) {
+            const mediaId = parseInt(target.getAttribute("data-index"), 10);
+            console.log("Clicked media ID:", mediaId);
+            const sortedIndex = mediaList.findIndex((item) => item.id === mediaId);
+            openLightbox(sortedIndex);
+          }
+        });
+      }
+  
+  
+      const prevButton = document.getElementById('lightbox_prev');
+      const nextButton = document.getElementById('lightbox_next');
+      const closeButton = document.getElementById('lightbox_close');
+      prevButton.addEventListener('click', () => {
+        const newIndex = currentIndex - 1;
+        if (newIndex >= 0) {
+          currentIndex = newIndex;
+          updateLightboxContent();
         }
-    });
-}
-
-
-        const prevButton = document.getElementById('lightbox_prev');
-        const nextButton = document.getElementById('lightbox_next');
-        const closeButton = document.getElementById('lightbox_close');
-        prevButton.addEventListener('click', () => {
-            const newIndex = currentIndex - 1;
-            if (newIndex >= 0) {
-                currentIndex = newIndex;
-                updateLightboxContent();
-            }
-        });
-        nextButton.addEventListener('click', () => {
-            const newIndex = currentIndex + 1;
-            if (newIndex < mediaList.length) {
-                currentIndex = newIndex;
-                updateLightboxContent();
-            }
-        });
-        closeButton.addEventListener('click', () => {
-            const lightbox = document.getElementById('lightbox');
-            lightbox.style.display = 'none';
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') {
-                const newIndex = currentIndex - 1;
-                if (newIndex >= 0) {
-                    currentIndex = newIndex;
-                    updateLightboxContent();
-                }
-            } else if (e.key === 'ArrowRight') {
-                const newIndex = currentIndex + 1;
-                if (newIndex < mediaList.length) {
-                    currentIndex = newIndex;
-                    updateLightboxContent();
-                }
-            } else if (e.key === 'Escape') {
-                const lightbox = document.getElementById('lightbox');
-                lightbox.style.display = 'none';
-            }
-        });
+      });
+      nextButton.addEventListener('click', () => {
+        const newIndex = currentIndex + 1;
+        if (newIndex < mediaList.length) {
+          currentIndex = newIndex;
+          updateLightboxContent();
+        }
+      });
+      closeButton.addEventListener('click', () => {
+        const lightbox = document.getElementById('lightbox');
+        lightbox.style.display = 'none';
+      });
+  
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+          const newIndex = currentIndex - 1;
+          if (newIndex >= 0) {
+            currentIndex = newIndex;
+            updateLightboxContent();
+          }
+        } else if (e.key === 'ArrowRight') {
+          const newIndex = currentIndex + 1;
+          if (newIndex < mediaList.length) {
+            currentIndex = newIndex;
+            updateLightboxContent();
+          }
+        } else if (e.key === 'Escape') {
+          const lightbox = document.getElementById('lightbox');
+          lightbox.style.display = 'none';
+        }
+      });
     }
-}
-
-initLightbox();
+  }
+  
+  initLightbox();
