@@ -42,11 +42,15 @@ export function mediaFactory(data, photographers) {
       const img = document.createElement('img');
       img.src = mediaSrc;
       img.alt = title;
+      img.setAttribute('role', 'image link'); 
+      img.setAttribute('aria-label', `${title}, closeup view`); 
       mediaElement.appendChild(img);
     } else if (fileType === 'video') {
       const videoElement = document.createElement('video');
       videoElement.src = mediaSrc;
       videoElement.controls = true;
+      videoElement.setAttribute('role', 'image link'); 
+      videoElement.setAttribute('aria-label', `${title}, closeup view`); 
       mediaElement.appendChild(videoElement);
     }
   
@@ -64,13 +68,19 @@ export function mediaFactory(data, photographers) {
     mediaInfo.appendChild(mediaTitle);
 
     const mediaLikes = document.createElement('div');
-    mediaLikes.className = 'media_likes';
-    mediaLikes.setAttribute('data-id', id);
-    mediaLikes.setAttribute('data-liked', 'false');
-    mediaLikes.innerHTML = `
-      <p><span class="likes_count">${likes}</span> <i class="heart_icon fa-solid fa-heart"></i></p>
-    `;
-    mediaInfo.appendChild(mediaLikes);
+mediaLikes.className = 'media_likes';
+mediaLikes.setAttribute('data-id', id);
+mediaLikes.setAttribute('data-liked', 'false');
+mediaLikes.innerHTML = `
+  <p><span class="likes_count">${likes}</span> <i class="heart_icon fa-solid fa-heart"></i></p>
+`;
+
+const heartIcon = mediaLikes.querySelector('.heart_icon');
+heartIcon.setAttribute('role', 'image'); 
+heartIcon.setAttribute('aria-label', 'likes'); 
+
+mediaInfo.appendChild(mediaLikes);
+    
 
     //ecouteur
     mediaLikes.addEventListener('click', (e) => {

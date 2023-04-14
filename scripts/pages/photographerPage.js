@@ -28,47 +28,71 @@ async function initPhotographer() {
     const { photographer, media } = await getPhotographerById(photographerId);
     console.log(photographer);
 
-    setPhotographerNameInModal(photographer.name);
+ setPhotographerNameInModal(photographer.name);
 
-    const photographerInfo = document.querySelector('.photographer_info');
-    const photographerImg = document.querySelector('.photographer_img');
-    const likeCount = document.querySelector('#like_count');
-    const likeBox = document.querySelector('#like_box');
-    const price = document.querySelector('#price');
-    
-    let totalLikes = 0;
+ const photographerInfo = document.querySelector('.photographer_info');
+ const photographerImg = document.querySelector('.photographer_img');
+ const likeCount = document.querySelector('#like_count');
+ const likeBox = document.querySelector('#like_box');
+ const price = document.querySelector('#price');
+ 
+ let totalLikes = 0;
 
-    photographerInfo.innerHTML = `
-      <h1 class="photographer_name">${photographer.name}</h1>
-      <p class="photographer_location">${photographer.city}, ${photographer.country}</p>
-      <p class="photographer_tagline">${photographer.tagline}</p>
-    `;
 
-    const photographerPortrait = document.createElement('img');
-    photographerPortrait.className = 'photographer_portrait';
-    photographerPortrait.src = `assets/photographers/${photographer.portrait}`;
-    photographerPortrait.alt = `Photo de ${photographer.name}`;
-    photographerImg.appendChild(photographerPortrait);
-    const mediaGallery = document.querySelector('.media_gallery');
-    
-    if (mediaGallery) {
-      for (let index = 0; index < media.length; index++) {
-        const mediaData = media[index];
-        const mediaElement = mediaFactory(mediaData, data.photographers); 
-        mediaGallery.appendChild(mediaElement);
-        totalLikes += mediaData.likes;
-      }
-      console.log(media);
-      updateTotalLikes(totalLikes - parseInt(likeCount.textContent, 10));
-    } else {
-      console.log('Media gallery element not found');
-    }
+let photographerName = document.querySelector('.photographer_name');
 
-    if (price) {
-      price.textContent = `${photographer.price}€ / jour`;
-    } else {
-      console.log('Price element not found');
-    }
+photographerInfo.innerHTML = `
+  <h1 class="photographer_name">${photographer.name}</h1>
+  <p class="photographer_location">${photographer.city}, ${photographer.country}</p>
+  <p class="photographer_tagline">${photographer.tagline}</p>
+`;
+
+
+photographerName = document.querySelector('.photographer_name');
+photographerName.setAttribute('role', 'heading');
+photographerName.setAttribute('aria-level', '1');
+photographerName.setAttribute('tabindex', '0');
+
+
+const photographerLocation = document.querySelector('.photographer_location');
+photographerLocation.setAttribute('role', 'text');
+
+const photographerTagline = document.querySelector('.photographer_tagline');
+photographerTagline.setAttribute('role', 'text');
+
+const photographerPortrait = document.createElement('img');
+photographerPortrait.className = 'photographer_portrait';
+photographerPortrait.src = `assets/photographers/${photographer.portrait}`;
+photographerPortrait.alt = `Photo de ${photographer.name}`;
+photographerPortrait.setAttribute('role', 'image');
+photographerImg.appendChild(photographerPortrait);
+const mediaGallery = document.querySelector('.media_gallery');
+
+if (mediaGallery) {
+  for (let index = 0; index < media.length; index++) {
+    const mediaData = media[index];
+    const mediaElement = mediaFactory(mediaData, data.photographers); 
+    mediaGallery.appendChild(mediaElement);
+    totalLikes += mediaData.likes;
+  }
+  console.log(media);
+  updateTotalLikes(totalLikes - parseInt(likeCount.textContent, 10));
+} else {
+  console.log('Media gallery element not found');
+}
+
+if (likeCount) {
+  likeCount.setAttribute('role', 'text');
+} else {
+  console.log('Like count element not found');
+}
+
+if (price) {
+  price.textContent = `${photographer.price}€ / jour`;
+  price.setAttribute('role', 'text'); 
+} else {
+  console.log('Price element not found');
+}
 
     likeCount.textContent = totalLikes;
   } else {
@@ -77,6 +101,7 @@ async function initPhotographer() {
 
   initSort();
 }
+
 
 function initSort() {
   import('/scripts/utils/sort.js')
