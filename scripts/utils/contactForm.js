@@ -1,6 +1,8 @@
 
 
 document.addEventListener("DOMContentLoaded", function () {
+  const contactButton = document.getElementById("contact_button");
+  contactButton.setAttribute('role', 'buttons');
     document.getElementById("contact_button").addEventListener("click", function () {
       displayModal();
     });
@@ -9,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
       closeModal();
     });
   
-    // Ajouter un gestionnaire d'événements pour l'événement 'submit' du formulaire
+  
     document.querySelector("form").addEventListener("submit", (event) => {
       event.preventDefault(); // Empêche la soumission du formulaire par défaut
   

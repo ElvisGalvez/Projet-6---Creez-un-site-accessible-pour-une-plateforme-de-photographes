@@ -122,12 +122,14 @@ sortOptions.addEventListener("keydown", (event) => {
       currentItem.setAttribute("tabindex", "-1");
       previousItem.setAttribute("tabindex", "0");
       previousItem.focus();
+      sortOptions.setAttribute('aria-activedescendant', previousItem.id); // Update aria-activedescendant
     } else if (event.key === "ArrowDown") {
       event.preventDefault();
       const nextItem = currentItem.nextElementSibling || optionItems[0];
       currentItem.setAttribute("tabindex", "-1");
       nextItem.setAttribute("tabindex", "0");
       nextItem.focus();
+      sortOptions.setAttribute('aria-activedescendant', nextItem.id); // Update aria-activedescendant
     }
   }
   applySort(); 

@@ -12,21 +12,23 @@
 
 <body>
   <header>
-    <img src="assets/images/logo.png" class="logo" />
+    <a href="index.html" aria-label="Fisheye Home page" role="image link">
+      <img src="assets/images/logo.png" class="logo" alt="Fisheye Home page" />
+    </a>
   </header>
   <main id="main">
     <div class="photographer_header">
       <div class="photographer_info"></div>
-      <button id="contact_button" class="contact_button">Contactez-moi</button>
+      <button id="contact_button" class="contact_button" aria-label="Contact me">Contactez-moi</button>
       <div class="photographer_img"></div>
     </div>
 
     <div class="sort_wrapper">
       <label id="sort_label" for="sort_button">Trier par :</label>
       <div class="sort_select_wrapper">
-        <button id="sort_button" role="button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="sort_label" data-selected="popularity">Popularité</button>
+        <button id="sort_button" role="select" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="sort_label" data-selected="popularity">Popularité</button>
         <span class="sort_arrow fas fa-chevron-down"></span>
-        <ul id="sort_options" class="sort_options" role="listbox" aria-labelledby="sort_label" hidden>
+        <ul id="sort_options" class="sort_options" role="listbox" aria-labelledby="sort_label" aria-activedescendant="" hidden>
           <li id="popularity" role="option" aria-selected="true" tabindex="0">Popularité</li>
           <li id="date" role="option" tabindex="0">Date</li>
           <li id="title" role="option" tabindex="0">Titre</li>
