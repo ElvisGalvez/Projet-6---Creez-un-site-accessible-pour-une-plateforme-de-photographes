@@ -48,7 +48,6 @@ export function mediaFactory(data, photographers) {
     } else if (fileType === 'video') {
       const videoElement = document.createElement('video');
       videoElement.src = mediaSrc;
-      videoElement.controls = true;
       videoElement.setAttribute('role', 'image link'); 
       videoElement.setAttribute('aria-label', `${title}, closeup view`); 
       mediaElement.appendChild(videoElement);
