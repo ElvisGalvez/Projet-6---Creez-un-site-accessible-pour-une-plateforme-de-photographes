@@ -49,7 +49,7 @@ function createLightbox() {
     const lightboxTitle = document.createElement('div');
     lightboxTitle.id = 'lightbox_title';
     lightboxTitle.classList.add('lightbox_title');
-    lightboxContentWrapper.appendChild(lightboxTitle);
+    lightbox.appendChild(lightboxTitle); // Déplacer cette ligne ici
 
     
 
@@ -101,10 +101,11 @@ async function updateLightboxContent() {
         img.alt = media.alt;
         content.innerHTML = '';
         content.appendChild(img);
-    } else if (media.video) {
+      } else if (media.video) {
         const video = document.createElement('video');
         video.src = mediaPath;
         video.controls = true;
+        video.setAttribute('preload', 'metadata'); 
         content.innerHTML = '';
         content.appendChild(video);
     }

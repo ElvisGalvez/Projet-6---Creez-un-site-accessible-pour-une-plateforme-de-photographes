@@ -315,31 +315,48 @@ header {
   left: 50%;
   transform: translate(-50%, -50%);
   max-width: 90%;
-  max-height: 90%;
+  height:100%;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
 }
 
 .lightbox_content img,
 .lightbox_content video {
   display: block;
   width: 100%;
-  height: 100%;
+  max-width: 800px; 
+  height: auto;
+  max-height: calc(100% - 60px); 
   object-fit: contain;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 .lightbox_content_wrapper {
-  display: flex;
+   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start; 
+  justify-content: flex-end; 
+  width: 100%; 
+  height: 100%; 
+  padding: 20px; 
 }
+
 
 
 .lightbox_title {
   margin-top: 10px;
   font-size: 16px;
   font-weight: bold;
-  color:#901C1C;
+  color: #901C1C;
+  text-align: center; 
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 5px 0;
+  flex-shrink: 0;
+  display: flex;
+  width: 100%;
 }
 
 .lightbox_prev,
