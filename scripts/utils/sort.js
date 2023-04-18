@@ -1,6 +1,6 @@
 import { getPhotographerById, getPhotographerIdFromUrl } from '/scripts/pages/photographerPage.js';
 import { mediaFactory } from '/scripts/factories/mediaFactory.js';
-import { getData } from '/scripts/pages/photographerPage.js'; 
+import { getData } from '/scripts/pages/photographerPage.js';
 
 function sortMedia(media, sortBy) {
   if (sortBy === "popularity") {
@@ -27,36 +27,95 @@ async function updateMediaGallery(sortedMedia) {
     const data = await getData();
     sortedMedia.forEach((mediaData, index) => {
       const mediaElement = mediaFactory(mediaData, data.photographers, index);
-      mediaElement.setAttribute("data-index", index); 
+      mediaElement.setAttribute("data-index", index);
       mediaGallery.appendChild(mediaElement);
     });
+    addKeyboardAccessibility();
   }
 }
 
-  export async function applySort() {
-    const photographerId = getPhotographerIdFromUrl();
-    const { media } = await getPhotographerById(photographerId);
-  
-    const sortBy = sortButton.getAttribute("data-selected");
-    let sortedMedia = sortMedia(media, sortBy);
-    console.log('sortedMedia before', sortedMedia);
 
-    clearMediaGallery();
-  
-    sortedMedia = sortedMedia.map((media, index) => ({
-      ...media,
-      index,
-    }));
-  
-    console.log('sortedMedia after', sortedMedia);
-  
-    updateMediaGallery(sortedMedia);
+export async function applySort() {
+  const photographerId = getPhotographerIdFromUrl();
+  const { media } = await getPhotographerById(photographerId);
+
+  const sortBy = sortButton.getAttribute("data-selected");
+  let sortedMedia = sortMedia(media, sortBy);
+  console.log('sortedMedia before', sortedMedia);
+
+  clearMediaGallery();
+
+  sortedMedia = sortedMedia.map((media, index) => ({
+    ...media,
+    index,
+  }));
+
+  console.log('sortedMedia after', sortedMedia);
+
+  updateMediaGallery(sortedMedia);
+}
+
+function addKeyboardAccessibility() {
+  const mediaItems = document.querySelectorAll(".media_gallery > *");
+
+  mediaItems.forEach((item, index) => {
+    item.setAttribute("tabindex", index === 0 ? "0" : "-1");
+    item.addEventListener("keydown", (event) => {
+      let newIndex;
+      if (event.key === "ArrowRight") {
+        newIndex = (index + 1) % mediaItems.length;
+      } else if (event.key === "ArrowLeft") {
+        newIndex = (index - 1 + mediaItems.length) % mediaItems.length;
+      } else {
+        return;
+      }
+
+      event.preventDefault();
+      item.setAttribute("tabindex", "-1");
+      mediaItems[newIndex].setAttribute("tabindex", "0");
+      mediaItems[newIndex].focus();
+    });
+  });
+}
+
+function trapFocus(event) {
+  const isExpanded = sortButton.getAttribute("aria-expanded") === "true";
+  if ((event.key === "Tab" || event.keyCode === 9) && isExpanded) {
+    event.preventDefault();
+    const focusableElements = Array.from(sortOptions.querySelectorAll("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])"));
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    if (event.shiftKey) {
+      if (document.activeElement === firstElement) {
+        lastElement.focus();
+      } else {
+        const index = focusableElements.indexOf(document.activeElement);
+        focusableElements[index - 1].focus();
+      }
+    } else {
+      if (document.activeElement === lastElement) {
+        firstElement.focus();
+      } else {
+        const index = focusableElements.indexOf(document.activeElement);
+        focusableElements[index + 1].focus();
+      }
+    }
   }
+}
 
 const sortButton = document.getElementById("sort_button");
 const sortOptions = document.getElementById("sort_options");
 const sortArrow = document.querySelector(".sort_arrow");
 const optionItems = Array.from(sortOptions.querySelectorAll("li"));
+
+function resetAriaSelected() {
+  optionItems.forEach((item) => {
+    item.removeAttribute("aria-selected");
+  });
+}
+
+const selectedOptionId = "popularity";
 
 sortButton.addEventListener("click", () => {
   const isExpanded = sortButton.getAttribute("aria-expanded") === "true";
@@ -65,72 +124,61 @@ sortButton.addEventListener("click", () => {
   sortArrow.classList.toggle("fa-chevron-down");
   sortArrow.classList.toggle("fa-chevron-up");
 
-  const selectedOptionId = sortButton.getAttribute("data-selected");
-  optionItems.forEach((item) => {
-    if (item.id === selectedOptionId) {
-      item.setAttribute("aria-selected", "true");
-    } else {
-      item.setAttribute("aria-selected", "false");
+  if (!isExpanded) {
+    const firstFocusableOption = optionItems.find((item) => item.id !== sortButton.getAttribute("data-selected"));
+    if (firstFocusableOption) {
+      firstFocusableOption.focus();
     }
-  });
+  }
 });
 
-sortOptions.addEventListener("click", (event) => {
-  const li = event.target.closest("li");
-  if (li) {
-    const selectedOption = optionItems.find((item) => item.id === li.id);
-    sortButton.textContent = selectedOption.textContent;
-    sortButton.setAttribute("data-selected", selectedOption.id);
+
+function handleListItemClick(event) {
+  const currentItem = event.target.closest("li");
+  if (currentItem) {
+    resetAriaSelected();
+    sortButton.textContent = currentItem.textContent;
+    sortButton.setAttribute("data-selected", currentItem.id);
     sortButton.setAttribute("aria-expanded", "false");
     sortOptions.hidden = true;
     sortArrow.classList.toggle("fa-chevron-down");
     sortArrow.classList.toggle("fa-chevron-up");
-    optionItems.forEach(item => {
-      item.addEventListener('click', () => {
- 
-      });
-    });
-    selectedOption.setAttribute("aria-selected", "true");
-
+    currentItem.setAttribute("aria-selected", "true");
+    applySort();
   }
-  applySort();
-});
-
-// accessibilité avec le clavier
-sortOptions.addEventListener("keydown", (event) => {
-  const currentItem = event.target.closest("li");
-  if (currentItem) {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      sortButton.textContent = currentItem.textContent;
-      sortButton.setAttribute("data-selected", currentItem.id);
-      sortButton.setAttribute("aria-expanded", "false");
-      sortOptions.hidden = true;
-      sortArrow.classList.toggle("fa-chevron-down");
-      sortArrow.classList.toggle("fa-chevron-up");
-      optionItems.forEach(item => {
-        item.addEventListener('click', () => {
-   
-        });
-      });
-      currentItem.setAttribute("aria-selected", "true");
-     
-
-    } else if (event.key === "ArrowUp") {
-      event.preventDefault();
-      const previousItem = currentItem.previousElementSibling || optionItems[optionItems.length - 1];
-      currentItem.setAttribute("tabindex", "-1");
-      previousItem.setAttribute("tabindex", "0");
-      previousItem.focus();
-      sortOptions.setAttribute('aria-activedescendant', previousItem.id); // Update aria-activedescendant
-    } else if (event.key === "ArrowDown") {
-      event.preventDefault();
-      const nextItem = currentItem.nextElementSibling || optionItems[0];
-      currentItem.setAttribute("tabindex", "-1");
-      nextItem.setAttribute("tabindex", "0");
-      nextItem.focus();
-      sortOptions.setAttribute('aria-activedescendant', nextItem.id); // Update aria-activedescendant
+}
+optionItems.forEach((item) => {
+  item.addEventListener("click", handleListItemClick);
+  item.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      handleListItemClick(event);
     }
-  }
-  applySort(); 
+  });
 });
+
+function handleMenuClose() {
+  sortButton.setAttribute("aria-expanded", "false");
+  sortOptions.hidden = true;
+  sortArrow.classList.toggle("fa-chevron-down");
+  sortArrow.classList.toggle("fa-chevron-up");
+  sortButton.focus();
+  sortOptions.removeEventListener("keydown", trapFocus);
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" || event.key === "Esc") {
+    handleMenuClose();
+  }
+});
+
+sortButton.addEventListener("focus", () => {
+  const isExpanded = sortButton.getAttribute("aria-expanded") === "true";
+  if (isExpanded) {
+    optionItems.forEach((item) => {
+      item.setAttribute("tabindex", "0");
+    });
+  }
+});
+
+
+
