@@ -31,10 +31,14 @@ function createLightbox() {
     const lightbox = document.createElement('div');
     lightbox.id = 'lightbox';
     lightbox.classList.add('lightbox');
+    lightbox.setAttribute('role', 'dialog');
+    lightbox.setAttribute('aria-label', 'image closeup view');
 
-    const lightboxClose = document.createElement('span');
+    const lightboxClose = document.createElement('button');
     lightboxClose.id = 'lightbox_close';
     lightboxClose.classList.add('lightbox_close');
+    lightboxClose.setAttribute('role', 'button');
+    lightboxClose.setAttribute('aria-label', 'Close dialog');
     lightboxClose.innerHTML = '&times;';
     lightbox.appendChild(lightboxClose);
 
@@ -49,7 +53,7 @@ function createLightbox() {
     const lightboxTitle = document.createElement('div');
     lightboxTitle.id = 'lightbox_title';
     lightboxTitle.classList.add('lightbox_title');
-    lightbox.appendChild(lightboxTitle); // Déplacer cette ligne ici
+    lightbox.appendChild(lightboxTitle);
 
     
 
@@ -57,12 +61,16 @@ function createLightbox() {
     lightboxPrev.id = 'lightbox_prev';
     lightboxPrev.classList.add('lightbox_prev');
     lightboxPrev.innerHTML = '&#10094;';
+    lightboxPrev.setAttribute('role', 'link');
+    lightboxPrev.setAttribute('aria-label', 'previous image');
     lightbox.appendChild(lightboxPrev);
 
     const lightboxNext = document.createElement('a');
     lightboxNext.id = 'lightbox_next';
     lightboxNext.classList.add('lightbox_next');
     lightboxNext.innerHTML = '&#10095;';
+    lightboxNext.setAttribute('role', 'link');
+    lightboxNext.setAttribute('aria-label', 'next image');
     lightbox.appendChild(lightboxNext);
 
     document.body.appendChild(lightbox);
@@ -77,41 +85,51 @@ function createLightbox() {
 
 
 async function updateLightboxContent() {
-    const lightbox = document.getElementById('lightbox');
-    const content = lightbox.querySelector('.lightbox_content');
-  
-    const media = mediaList[currentIndex];
-    if (!media || !media.photographerId) {
-      console.error('Invalid media object:', media);
-      return;
-    }
-  
-    const data = await getData();
-    const photographerFirstName = getPhotographerFirstNameById(
-      data.photographers,
-      media.photographerId
-    );
-    const mediaPath = getMediaPath(media, photographerFirstName);
-  
-    console.log(mediaPath);
+  const lightbox = document.getElementById('lightbox');
+  const content = lightbox.querySelector('.lightbox_content');
 
-    if (media.image) {
-        const img = document.createElement('img');
-        img.src = mediaPath;
-        img.alt = media.alt;
-        content.innerHTML = '';
-        content.appendChild(img);
-      } else if (media.video) {
-        const video = document.createElement('video');
-        video.src = mediaPath;
-        video.controls = true;
-        video.setAttribute('preload', 'metadata'); 
-        content.innerHTML = '';
-        content.appendChild(video);
-    }
-    const lightboxTitle = document.getElementById('lightbox_title');
-    lightboxTitle.textContent = media.title;
+  const media = mediaList[currentIndex];
+  if (!media || !media.photographerId) {
+    console.error('Invalid media object:', media);
+    return;
+  }
+
+  const data = await getData();
+  const photographerFirstName = getPhotographerFirstNameById(
+    data.photographers,
+    media.photographerId
+  );
+  const mediaPath = getMediaPath(media, photographerFirstName);
+
+  console.log(mediaPath);
+
+  if (media.image) {
+    const img = document.createElement('img');
+    img.src = mediaPath;
+    img.alt = media.alt;
+    img.setAttribute('role', 'image');
+    img.setAttribute('aria-label', media.title);
+    content.innerHTML = '';
+    content.appendChild(img);
+  } else if (media.video) {
+    const video = document.createElement('video');
+    video.src = mediaPath;
+    video.controls = true;
+    video.setAttribute('preload', 'metadata');
+    video.setAttribute('role', 'video');
+    video.setAttribute('aria-label', media.title);
+    content.innerHTML = '';
+    content.appendChild(video);
+  }
+
+const lightboxTitle = document.createElement('div');
+lightboxTitle.id = 'lightbox_title';
+lightboxTitle.classList.add('lightbox_title');
+lightboxTitle.setAttribute('role', 'text');
+lightboxTitle.textContent = media.title;
+content.appendChild(lightboxTitle);
 }
+
 
 function openLightbox(index) {
     if (index >= 0 && index < mediaList.length) {

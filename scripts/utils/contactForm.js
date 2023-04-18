@@ -30,6 +30,12 @@ const message = document.getElementById("message").value.trim();
       console.log("Displaying modal"); // Debug message
       const modal = document.getElementById("contact_modal");
       modal.style.display = "block";
+      modal.setAttribute("role", "dialog");
+      modal.setAttribute("aria-modal", "true");
+      const modalHeading = document.getElementById("modal-heading");
+      const photographerName = document.getElementById("photographer_name_modal").textContent;
+      modal.setAttribute("aria-label", `Contactez-moi ${photographerName}`);
+      modal.setAttribute("aria-labelledby", modalHeading.id);
     }
   
     function closeModal() {
@@ -37,12 +43,16 @@ const message = document.getElementById("message").value.trim();
       const modal = document.getElementById("contact_modal");
       modal.style.display = "none";
     }
+
+    const closeButton = document.getElementById("close_modal");
+closeButton.setAttribute("role", "button");
+closeButton.setAttribute("aria-label", "close contact form");
   });
 
   export function setPhotographerNameInModal(photographerName) {
     const photographerNameElement = document.getElementById('photographer_name_modal');
     photographerNameElement.textContent = photographerName;
   }
-
+  
   
   

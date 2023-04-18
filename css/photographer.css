@@ -302,7 +302,7 @@ header .logo {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .lightbox_content img,
@@ -337,7 +337,6 @@ header .logo {
   padding: 5px 0;
   flex-shrink: 0;
   display: flex;
-  width: 100%;
 }
 
 .lightbox_prev,

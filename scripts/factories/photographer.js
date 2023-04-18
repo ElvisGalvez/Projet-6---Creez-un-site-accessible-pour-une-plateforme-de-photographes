@@ -12,7 +12,7 @@ function photographerFactory(data) {
       
         // Modifie le contenu de l'article cloné
         const link = article.querySelector('.photographer_link');
-        link.setAttribute('aria-label', `Voir le profil de ${data.name}`);
+        link.setAttribute('aria-label', `${data.name}`);
         link.setAttribute('href', `photographer.html?id=${data.id}`);
         const img = link.querySelector('.photographer_image');
         img.setAttribute('src', `assets/photographers/${data.portrait}`);

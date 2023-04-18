@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 <head>
   <link href="css/photographer.css" rel="stylesheet" type="text/css" />
@@ -49,30 +49,29 @@
   <div id="contact_modal">
     <div class="modal">
       <header>
-        <h2>Contactez-moi</h2>
-        <h3 id="photographer_name_modal"></h3>
-        <div class="close_container">
-          <img id="close_modal" src="assets/icons/close.svg" alt="Fermer la modale" />
-        </div>
+        <h2 id="modal-heading" role="heading">Contactez-moi <span id="photographer_name_modal"></span></h2>
       </header>
+      <div class="close_container">
+        <img id="close_modal" src="assets/icons/close.svg" alt="Fermer la modale" />
+      </div>
       <form>
         <div>
-          <label>Prénom</label>
-          <input type="text" id="first_name" />
+          <label id="first_name_label" for="first_name" role="label">Prénom</label>
+          <input type="text" id="first_name" aria-labelledby="first_name_label" role="textfield" />
         </div>
         <div>
-          <label>Nom</label>
-          <input type="text" id="last_name" />
+          <label id="last_name_label" for="last_name" role="label">Nom</label>
+          <input type="text" id="last_name" aria-labelledby="last_name_label" role="textfield" />
         </div>
         <div>
-          <label>Email</label>
-          <input type="email" id="email" />
+          <label id="email_label" for="email" role="label">Email</label>
+          <input type="email" id="email" aria-labelledby="email_label" role="textfield" />
         </div>
         <div>
-          <label>Votre message</label>
-          <textarea id="message"></textarea>
+          <label id="message_label" for="message" role="label">Votre message</label>
+          <textarea id="message" role="textfield" aria-labelledby="message_label"></textarea>
         </div>
-        <button class="contact_button" type="submit">Envoyer</button>
+        <button class="contact_button" type="submit" role="button" aria-label="send">Envoyer</button>
       </form>
     </div>
   </div>
