@@ -12,7 +12,7 @@
 
 <body>
   <header>
-    <a href="index.html" aria-label="Fisheye Home page" role="image link">
+    <a href="index.html" class="logo_link" aria-label="Fisheye Home page">
       <img src="assets/images/logo.png" class="logo" alt="Fisheye Home page" />
     </a>
   </header>
@@ -26,22 +26,22 @@
     <div class="sort_wrapper">
       <label id="sort_label" for="sort_button">Trier par :</label>
       <div class="sort_select_wrapper">
-        <button id="sort_button" role="select" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="sort_label" data-selected="popularity">Popularité</button>
+        <button id="sort_button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="sort_label" data-selected="popularity">Popularité</button>
         <span class="sort_arrow fas fa-chevron-down"></span>
-        <ul id="sort_options" class="sort_options" role="listbox" aria-labelledby="sort_label" aria-activedescendant="" hidden>
+        <ul id="sort_options" class="sort_options" role="listbox" aria-labelledby="sort_label" aria-activedescendant="popularity" hidden>
           <li id="popularity" role="option" aria-selected="true" tabindex="0">Popularité</li>
           <li id="date" role="option" tabindex="0">Date</li>
           <li id="title" role="option" tabindex="0">Titre</li>
         </ul>
       </div>
     </div>
-
+    <div class="media_gallery_container">
       <div class="media_gallery"></div>
-
+    </div>
     <div class="box_container">
       <div id="like_section">
         <p id="like_count">297 081</p>
-        <i class="heart_icon fa-solid fa-heart"></i>
+        <i class="heart_icon fa-solid fa-heart" role="image"></i>
       </div>
       <p id="price"></p>
     </div>
@@ -49,34 +49,31 @@
   <div id="contact_modal">
     <div class="modal">
       <header>
-        <h2 id="modal-heading" role="heading">Contactez-moi <span id="photographer_name_modal"></span></h2>
+        <h2 id="modal-heading">Contactez-moi <span id="photographer_name_modal"></span></h2>
       </header>
       <div class="close_container">
         <img id="close_modal" src="assets/icons/close.svg" alt="Fermer la modale" />
       </div>
       <form>
         <div>
-          <label id="first_name_label" for="first_name" role="label">Prénom</label>
-          <input type="text" id="first_name" aria-labelledby="first_name_label" role="textfield" />
+          <label id="first_name_label" for="first_name">Prénom</label>
+          <input type="text" id="first_name" aria-labelledby="first_name_label" />
         </div>
         <div>
-          <label id="last_name_label" for="last_name" role="label">Nom</label>
-          <input type="text" id="last_name" aria-labelledby="last_name_label" role="textfield" />
+          <label id="last_name_label" for="last_name">Nom</label>
+          <input type="text" id="last_name" aria-labelledby="last_name_label" />
         </div>
         <div>
-          <label id="email_label" for="email" role="label">Email</label>
-          <input type="email" id="email" aria-labelledby="email_label" role="textfield" />
+          <label id="email_label" for="email">Email</label>
+          <input type="email" id="email" aria-labelledby="email_label" />
         </div>
         <div>
-          <label id="message_label" for="message" role="label">Votre message</label>
-          <textarea id="message" role="textfield" aria-labelledby="message_label"></textarea>
+          <label id="message_label" for="message">Votre message</label>
+          <textarea id="message" aria-labelledby="message_label"></textarea>
         </div>
-        <button class="contact_button" type="submit" role="button" aria-label="send">Envoyer</button>
+        <button class="contact_button" type="submit" aria-label="send">Envoyer</button>
       </form>
     </div>
-  </div>
-
-
   </div>
 
   <script type="module" src="scripts/utils/lightbox.js"></script>

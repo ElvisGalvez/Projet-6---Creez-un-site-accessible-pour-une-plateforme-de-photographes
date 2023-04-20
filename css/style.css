@@ -57,6 +57,10 @@ header .logo {
   margin: 5px 0px 0px 0px;
 }
 
+.photographer_link:focus, .logo_link:focus {
+  outline: 8px solid #e70813;
+}
+
 .photographer_details {
   display: flex;
   flex-direction: column;

@@ -131,7 +131,7 @@ content.appendChild(lightboxTitle);
 }
 
 
-function openLightbox(index) {
+export function openLightbox(index) {
     if (index >= 0 && index < mediaList.length) {
       currentIndex = index;
       updateLightboxContent();
@@ -226,3 +226,7 @@ function openLightbox(index) {
   }
   
   initLightbox();
+
+  export function updateMediaList(newMediaList) {
+    mediaList = newMediaList;
+  }

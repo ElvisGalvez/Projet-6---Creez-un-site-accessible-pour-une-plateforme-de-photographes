@@ -1,3 +1,5 @@
+import { openLightbox } from '/scripts/utils/lightbox.js';
+
 export function getPhotographerFirstNameById(photographers, id) {
   const photographer = photographers.find((p) => p.id === id);
   return photographer.name.split(' ')[0].replace(' ', '_');
@@ -20,7 +22,7 @@ function updateTotalLikes(change) {
   likeCountElement.textContent = currentTotalLikes + change;
 }
 
-export function mediaFactory(data, photographers) { 
+export function mediaFactory(data, photographers, index) { 
   const { id, photographerId, title, image, video, likes, date, price } = data;
 
   function getMediaDOM() {
@@ -42,16 +44,32 @@ export function mediaFactory(data, photographers) {
       const img = document.createElement('img');
       img.src = mediaSrc;
       img.alt = title;
-      img.setAttribute('role', 'image link'); 
-      img.setAttribute('aria-label', `${title}, closeup view`); 
+      img.setAttribute('role', 'image link');
+      img.setAttribute('aria-label', `${title}, closeup view`);
+      img.setAttribute('tabindex', '0'); 
       mediaElement.appendChild(img);
+      img.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openLightbox(index);
+        }
+      });
+
     } else if (fileType === 'video') {
       const videoElement = document.createElement('video');
       videoElement.src = mediaSrc;
-      videoElement.setAttribute('role', 'image link'); 
-      videoElement.setAttribute('aria-label', `${title}, closeup view`); 
+      videoElement.setAttribute('role', 'image link');
+      videoElement.setAttribute('aria-label', `${title}, closeup view`);
+      videoElement.setAttribute('tabindex', '0'); 
+      videoElement.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openLightbox(index);
+        }
+      });
       mediaElement.appendChild(videoElement);
     }
+
   
     const mediaWrapper = document.createElement("div");
     mediaWrapper.classList.add("media_wrapper");
@@ -77,13 +95,21 @@ mediaLikes.innerHTML = `
 const heartIcon = mediaLikes.querySelector('.heart_icon');
 heartIcon.setAttribute('role', 'image'); 
 heartIcon.setAttribute('aria-label', 'likes'); 
+heartIcon.setAttribute('tabindex', '0');
 
 mediaInfo.appendChild(mediaLikes);
     
 
-    //ecouteur
+    //ecouteurs
     mediaLikes.addEventListener('click', (e) => {
       if (e.target.classList.contains('heart_icon')) {
+        incrementLike(mediaLikes);
+      }
+    });
+
+    heartIcon.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
         incrementLike(mediaLikes);
       }
     });

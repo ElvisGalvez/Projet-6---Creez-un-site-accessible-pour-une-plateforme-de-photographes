@@ -1,6 +1,7 @@
 import { getPhotographerById, getPhotographerIdFromUrl } from '/scripts/pages/photographerPage.js';
 import { mediaFactory } from '/scripts/factories/mediaFactory.js';
 import { getData } from '/scripts/pages/photographerPage.js';
+import { updateMediaList } from '/scripts/utils/lightbox.js';
 
 function sortMedia(media, sortBy) {
   if (sortBy === "popularity") {
@@ -35,7 +36,7 @@ async function updateMediaGallery(sortedMedia) {
 }
 
 
-export async function applySort() {
+async function applySort() {
   const photographerId = getPhotographerIdFromUrl();
   const { media } = await getPhotographerById(photographerId);
 
@@ -52,6 +53,7 @@ export async function applySort() {
 
   console.log('sortedMedia after', sortedMedia);
 
+  updateMediaList(sortedMedia);
   updateMediaGallery(sortedMedia);
 }
 
@@ -77,28 +79,28 @@ function addKeyboardAccessibility() {
     });
   });
 }
-
 function trapFocus(event) {
   const isExpanded = sortButton.getAttribute("aria-expanded") === "true";
   if ((event.key === "Tab" || event.keyCode === 9) && isExpanded) {
     event.preventDefault();
     const focusableElements = Array.from(sortOptions.querySelectorAll("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])"));
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
+    const filteredFocusableElements = focusableElements.filter(el => el.id !== sortButton.getAttribute("data-selected"));
+    const firstElement = filteredFocusableElements[0];
+    const lastElement = filteredFocusableElements[filteredFocusableElements.length - 1];
 
     if (event.shiftKey) {
       if (document.activeElement === firstElement) {
         lastElement.focus();
       } else {
-        const index = focusableElements.indexOf(document.activeElement);
-        focusableElements[index - 1].focus();
+        const index = filteredFocusableElements.indexOf(document.activeElement);
+        filteredFocusableElements[index - 1].focus();
       }
     } else {
       if (document.activeElement === lastElement) {
         firstElement.focus();
       } else {
-        const index = focusableElements.indexOf(document.activeElement);
-        focusableElements[index + 1].focus();
+        const index = filteredFocusableElements.indexOf(document.activeElement);
+        filteredFocusableElements[index + 1].focus();
       }
     }
   }
@@ -129,6 +131,11 @@ sortButton.addEventListener("click", () => {
     if (firstFocusableOption) {
       firstFocusableOption.focus();
     }
+    // Ajout de l'écouteur d'événement pour le piégeage du focus
+    sortOptions.addEventListener("keydown", trapFocus);
+  } else {
+    // Suppression de l'écouteur d'événement pour le piégeage du focus lors de la fermeture du menu
+    sortOptions.removeEventListener("keydown", trapFocus);
   }
 });
 
@@ -182,3 +189,4 @@ sortButton.addEventListener("focus", () => {
 
 
 
+export { applySort };
