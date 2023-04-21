@@ -1,7 +1,4 @@
 function photographerFactory(data) {
-    const { name, portrait, city, country, price, tagline } = data;
-
-    const picture = `assets/photographers/${portrait}`;
 
     function getUserCardDOM() {
         // Sélectionne le modèle d'article vide à cloner

@@ -1,3 +1,5 @@
+
+// Appelle la fonction displayModal au click sur le boutton 
 document.addEventListener("DOMContentLoaded", function () {
   const contactButton = document.getElementById("contact_button");
   contactButton.setAttribute('role', 'buttons');
@@ -5,12 +7,14 @@ document.addEventListener("DOMContentLoaded", function () {
     displayModal();
   });
 
+  // Appelle la fonction closeModal au clic sur la croix
   document.getElementById("close_modal").addEventListener("click", function () {
     closeModal();
   });
 
+  // Empêche l'évènement par défaut du formulaire et récupère les valeurs des champs remplis
   document.querySelector("form").addEventListener("submit", (event) => {
-    event.preventDefault(); // Empêche la soumission du formulaire par défaut
+    event.preventDefault(); 
 
     const firstName = document.getElementById("first_name").value.trim();
     const lastName = document.getElementById("last_name").value.trim();
@@ -23,12 +27,15 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Message:", message);
   });
 
+  // Permets de fermer le formulaire avec 'échap'
   document.addEventListener("keyup", function (event) {
     if (event.key === "Escape") {
       closeModal();
     }
   });
 
+
+  // gère le focus des éléments de la modale
   function trapFocus(element) {
     const focusableElements = element.querySelectorAll(
       'a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
@@ -53,8 +60,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Permets d'afficher la modale
   function displayModal() {
-    console.log("Displaying modal"); // Debug message
+    console.log("Displaying modal"); 
     const modal = document.getElementById("contact_modal");
     modal.style.display = "block";
     modal.setAttribute("role", "dialog");
@@ -66,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     trapFocus(modal);
 
-
+// Permets de naviguer dans la modale à l'aide de 'TAB'
     const focusableElements = modal.querySelectorAll(
       'a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
     );
@@ -76,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
   } 
   
   function closeModal() {
-    console.log("Closing modal"); // Debug message
+    console.log("Closing modal"); 
     const modal = document.getElementById("contact_modal");
     modal.style.display = "none";
   }
@@ -86,6 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
   closeButton.setAttribute("aria-label", "close contact form");
 });
 
+// Mets à jour le nom du photographe dans la modale en utilisant son ID
 export function setPhotographerNameInModal(photographerName) {
   const photographerNameElement = document.getElementById('photographer_name_modal');
   photographerNameElement.textContent = photographerName;

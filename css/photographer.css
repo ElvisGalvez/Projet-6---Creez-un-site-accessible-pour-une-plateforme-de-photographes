@@ -403,6 +403,10 @@ textarea {
           user-select: none;
 }
 
+.lightbox_prev:focus, .lightbox_next:focus {
+  outline: 2px solid red;
+}
+
 .lightbox_next {
   right: 0;
   border-radius: 3px 0 0 3px;
