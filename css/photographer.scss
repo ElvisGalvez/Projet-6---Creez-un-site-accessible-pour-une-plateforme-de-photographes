@@ -17,6 +17,7 @@ header {
   justify-content: space-around;
   align-items: center;
   height: 313px;
+  margin: 0px 0px 20px 0px;
 }
 
 .photographer_info {
@@ -99,7 +100,8 @@ header {
   margin: 45px 0px 0px 0px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: space-evenly;
+
 }
 
 .media_item img,
@@ -158,10 +160,10 @@ header {
 #sort_button:focus,
 #popularity:focus,
 #date:focus,
-#title:focus {
+#title:focus,
+video:focus {
   outline: 8px solid #e70813;
 }
-
 
 // contact modal
 
@@ -421,7 +423,8 @@ textarea {
   user-select: none;
 }
 
-.lightbox_prev:focus, .lightbox_next:focus {
+.lightbox_prev:focus,
+.lightbox_next:focus {
   outline: 2px solid red;
 }
 

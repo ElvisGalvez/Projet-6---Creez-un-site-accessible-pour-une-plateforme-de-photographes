@@ -128,6 +128,7 @@ async function updateLightboxContent() {
     video.setAttribute('role', 'video');
     video.setAttribute('aria-label', media.title);
     content.innerHTML = '';
+    
     content.appendChild(video);
   }
 
