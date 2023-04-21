@@ -3,6 +3,7 @@ import { mediaFactory } from '/scripts/factories/mediaFactory.js';
 import { getData } from '/scripts/pages/photographerPage.js';
 import { updateMediaList } from '/scripts/utils/lightbox.js';
 
+// Exécute le tri des médias dans l'ordre décroissant de leur paramètre de tri et les retourne
 function sortMedia(media, sortBy) {
   if (sortBy === "popularity") {
     return media.sort((a, b) => b.likes - a.likes);
@@ -14,13 +15,8 @@ function sortMedia(media, sortBy) {
   return media;
 }
 
-function clearMediaGallery() {
-  const mediaGallery = document.querySelector('.media_gallery');
-  while (mediaGallery.firstChild) {
-    mediaGallery.removeChild(mediaGallery.firstChild);
-  }
-}
 
+// Supprime la galerie actuelle pour éviter les doublons et la remplace par les médias triés
 async function updateMediaGallery(sortedMedia) {
   const mediaGallery = document.querySelector(".media_gallery");
   if (mediaGallery) {
@@ -31,21 +27,21 @@ async function updateMediaGallery(sortedMedia) {
       mediaElement.setAttribute("data-index", index);
       mediaGallery.appendChild(mediaElement);
     });
-    addKeyboardAccessibility();
   }
 }
 
-
+// Fonction appelée à chaque tri
 async function applySort() {
+  // Récupère l'identifiant du photographe via l'URL ainsi que ses médias
   const photographerId = getPhotographerIdFromUrl();
   const { media } = await getPhotographerById(photographerId);
 
+  //Utilise la fonction sortMedia pour trier les médias en fonction d'un critère
   const sortBy = sortButton.getAttribute("data-selected");
   let sortedMedia = sortMedia(media, sortBy);
   console.log('sortedMedia before', sortedMedia);
 
-  clearMediaGallery();
-
+  // Mappe les éléments pour leur attribuer un nouvel index égal à leur index dans le nouveay tri
   sortedMedia = sortedMedia.map((media, index) => ({
     ...media,
     index,
@@ -57,28 +53,7 @@ async function applySort() {
   updateMediaGallery(sortedMedia);
 }
 
-function addKeyboardAccessibility() {
-  const mediaItems = document.querySelectorAll(".media_gallery > *");
-
-  mediaItems.forEach((item, index) => {
-    item.setAttribute("tabindex", index === 0 ? "0" : "-1");
-    item.addEventListener("keydown", (event) => {
-      let newIndex;
-      if (event.key === "ArrowRight") {
-        newIndex = (index + 1) % mediaItems.length;
-      } else if (event.key === "ArrowLeft") {
-        newIndex = (index - 1 + mediaItems.length) % mediaItems.length;
-      } else {
-        return;
-      }
-
-      event.preventDefault();
-      item.setAttribute("tabindex", "-1");
-      mediaItems[newIndex].setAttribute("tabindex", "0");
-      mediaItems[newIndex].focus();
-    });
-  });
-}
+// Permets la navigation au clavier à l'intérieur du menu de tri
 function trapFocus(event) {
   const isExpanded = sortButton.getAttribute("aria-expanded") === "true";
   if ((event.key === "Tab" || event.keyCode === 9) && isExpanded) {
@@ -109,16 +84,18 @@ function trapFocus(event) {
 const sortButton = document.getElementById("sort_button");
 const sortOptions = document.getElementById("sort_options");
 const sortArrow = document.querySelector(".sort_arrow");
+
+// Stocke les options du menu à l'exeption de celle actuellement sockée dans 'sortButton'
 const optionItems = Array.from(sortOptions.querySelectorAll("li"));
 
+// Supprime "aria-selected" sur toutes les options de tri (empêche que plusieurs options soient sélectionnées en même temps)
 function resetAriaSelected() {
   optionItems.forEach((item) => {
     item.removeAttribute("aria-selected");
   });
 }
 
-const selectedOptionId = "popularity";
-
+// Affiche ou cache le menu déroulant 'sortOption' en vérifiant si le menu est ouvert ou fermé via 'aria-expanded'
 sortButton.addEventListener("click", () => {
   const isExpanded = sortButton.getAttribute("aria-expanded") === "true";
   sortButton.setAttribute("aria-expanded", !isExpanded);
@@ -139,7 +116,7 @@ sortButton.addEventListener("click", () => {
   }
 });
 
-
+// Mets à jour l'état du menu et applique le tri en fonction de l'option sélectionnée
 function handleListItemClick(event) {
   const currentItem = event.target.closest("li");
   if (currentItem) {
@@ -154,6 +131,8 @@ function handleListItemClick(event) {
     applySort();
   }
 }
+
+// Permets l'accessibilité au clavier pour le menu de tri
 optionItems.forEach((item) => {
   item.addEventListener("click", handleListItemClick);
   item.addEventListener("keydown", (event) => {
@@ -163,21 +142,13 @@ optionItems.forEach((item) => {
   });
 });
 
-function handleMenuClose() {
-  sortButton.setAttribute("aria-expanded", "false");
-  sortOptions.hidden = true;
-  sortArrow.classList.toggle("fa-chevron-down");
-  sortArrow.classList.toggle("fa-chevron-up");
-  sortButton.focus();
-  sortOptions.removeEventListener("keydown", trapFocus);
-}
-
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" || event.key === "Esc") {
     handleMenuClose();
   }
 });
 
+// Si le boutton de tri est ouvert, rends les options du menu focusables avec la touche "TAB"
 sortButton.addEventListener("focus", () => {
   const isExpanded = sortButton.getAttribute("aria-expanded") === "true";
   if (isExpanded) {
@@ -187,6 +158,15 @@ sortButton.addEventListener("focus", () => {
   }
 });
 
+// A la fermeture du menu, change "aria-expanded" sur le boutton, masque les options, change la flèche et libère le focus
+function handleMenuClose() {
+  sortButton.setAttribute("aria-expanded", "false");
+  sortOptions.hidden = true;
+  sortArrow.classList.toggle("fa-chevron-down");
+  sortArrow.classList.toggle("fa-chevron-up");
+  sortButton.focus();
+  sortOptions.removeEventListener("keydown", trapFocus);
+}
 
-
+// Permettra d'appliquer le tri sur la page du photographe
 export { applySort };

@@ -1,14 +1,14 @@
 import { mediaFactory, updateTotalLikes } from '/scripts/factories/mediaFactory.js';
 import { setPhotographerNameInModal } from '/scripts/utils/contactForm.js';
 
-//récupère les données des photographes et de leurs médias à partir du JSON
+// Récupère les données des photographes et de leurs médias à partir du JSON
 async function getData() {
   const response = await fetch('/data/photographers.json');
   const data = await response.json();
   return data;
 }
 
-//récupère les données et retourne un objet contenant le photographe et ses médias
+// Récupère les données et retourne un objet contenant le photographe et ses médias
 async function getPhotographerById(id) {
   const data = await getData();
   const photographer = data.photographers.find(p => p.id === parseInt(id, 10));
@@ -16,13 +16,13 @@ async function getPhotographerById(id) {
   return { photographer, media };
 }
 
-//récupère l'ID du photographe à partir de l'URL de la page photographer.html
+// Récupère l'ID du photographe à partir de l'URL de la page photographer.html
 function getPhotographerIdFromUrl() {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get('id');
 }
 
-//appelle la fonction de tri de sort.js
+// Appelle la fonction de tri importée de sort.js
 function initSort() {
   import('/scripts/utils/sort.js')
     .then(({ applySort }) => {
@@ -33,9 +33,12 @@ function initSort() {
     });
 }
 
-//mets à jour la page photographer.html avec les données du photographe et de ses médias
+// Mets à jour la page photographer.html avec les données du photographe et de ses médias
 async function initPhotographer() {
+
+  // Récupère l'ID du photographe à partir de l'url et mets la page à jour avec ses informations
   const photographerId = getPhotographerIdFromUrl();
+
   if (photographerId) {
     console.log(`Photographer ID: ${photographerId}`);
     const data = await getData();
@@ -77,11 +80,15 @@ async function initPhotographer() {
     if (mediaGallery) {
       for (let index = 0; index < media.length; index++) {
         const mediaData = media[index];
+
+        // La fonction mediaFactory génère dynamiquement les éléments HTML pour chaque média du photographe
         const mediaElement = mediaFactory(mediaData, data.photographers);
         mediaGallery.appendChild(mediaElement);
         totalLikes += mediaData.likes;
       }
       console.log(media);
+
+      // Mets à jour le nombre de likes totaux affichés sur la page
       updateTotalLikes(totalLikes - parseInt(likeCount.textContent, 10));
     } else {
       console.log('Media gallery element not found');
