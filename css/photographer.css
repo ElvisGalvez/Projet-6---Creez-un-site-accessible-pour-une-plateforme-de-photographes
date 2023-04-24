@@ -83,6 +83,10 @@ header .logo {
   padding: 0px 0px 0px 10px;
 }
 
+.heart_icon.liked {
+  color: red;
+}
+
 .media_gallery_container {
   display: flex;
 }
@@ -183,7 +187,7 @@ video:focus {
 }
 #contact_modal .modal {
   position: absolute;
-  height: 750px;
+  height: 95%;
   width: 650px;
   top: 50%;
   left: 50%;
@@ -213,6 +217,13 @@ video:focus {
   width: 100%;
   box-sizing: border-box;
   height: 40px;
+}
+
+.error-message {
+  color: #e70813;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 0px 0px 10px 0px;
 }
 
 .modal textarea {

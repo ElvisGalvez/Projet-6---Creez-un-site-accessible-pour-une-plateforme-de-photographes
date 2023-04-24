@@ -12,19 +12,148 @@ document.addEventListener("DOMContentLoaded", function () {
     closeModal();
   });
 
-  // Empêche l'évènement par défaut du formulaire et récupère les valeurs des champs remplis
-  document.querySelector("form").addEventListener("submit", (event) => {
-    event.preventDefault(); 
 
+// VERIFCATION PRENOM
+  function firstNameCheck() {
+    const firstNameInput = document.getElementById("first_name");
+    const firstNameValue = firstNameInput.value.trim();
+    const errorMessage = firstNameInput.parentNode.querySelector(".error-message");
+  
+    const regex = /^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ' -]*$/;
+    const isValid = regex.test(firstNameValue) && firstNameValue.length >= 2;
+  
+    if (!isValid) {
+      console.log("Prénom invalide");
+  
+      if (!errorMessage) {
+        const newErrorMessage = document.createElement("div");
+        newErrorMessage.classList.add("error-message");
+        newErrorMessage.textContent =
+          "Le prénom est invalide. Il doit comporter au moins deux caractères sans chiffres ni espaces.";
+        firstNameInput.parentNode.appendChild(newErrorMessage);
+      }
+      return false;
+    } else {
+      if (errorMessage) {
+        errorMessage.remove();
+      }
+      return true;
+    }
+  }
+
+
+  //VERIFICATION NOM
+  function lastNameCheck() {
+    const lastNameInput = document.getElementById("last_name");
+    const lastNameValue = lastNameInput.value.trim();
+    const errorMessage = lastNameInput.parentNode.querySelector(".error-message");
+  
+    const regex = /^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ' -]*$/;
+    const isValid = regex.test(lastNameValue) && lastNameValue.length >= 2;
+  
+    if (!isValid) {
+      console.log("Nom invalide");
+  
+      if (!errorMessage) {
+        const newErrorMessage = document.createElement("div");
+        newErrorMessage.classList.add("error-message");
+        newErrorMessage.textContent =
+          "Le nom est invalide. Il doit comporter au moins deux caractères sans chiffres ni espaces.";
+        lastNameInput.parentNode.appendChild(newErrorMessage);
+      }
+      return false;
+    } else {
+      if (errorMessage) {
+        errorMessage.remove();
+      }
+      return true;
+    }
+  }
+
+// VERIFICATION DU MAIL
+function emailCheck() {
+  const emailInput = document.getElementById("email");
+  const emailValue = emailInput.value.trim();
+  const errorMessage = emailInput.parentNode.querySelector(".error-message");
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const isValid = emailRegex.test(emailValue);
+
+  if (!isValid) {
+    console.log("Email invalide");
+
+    if (!errorMessage) {
+      const newErrorMessage = document.createElement("div");
+      newErrorMessage.classList.add("error-message");
+      newErrorMessage.textContent = "L'adresse e-mail est invalide.";
+      emailInput.parentNode.appendChild(newErrorMessage);
+    }
+    return false;
+  } else {
+    console.log("Email valide");
+
+    if (errorMessage) {
+      errorMessage.remove();
+    }
+    return true;
+  }
+}
+
+
+  //VERIFICATION DU MESSAGE
+  
+  function messageCheck() {
+    const messageInput = document.getElementById("message");
+    const messageValue = messageInput.value.trim();
+    const errorMessage = messageInput.parentNode.querySelector(".error-message");
+  
+    const isValid = messageValue !== '';
+  
+    if (!isValid) {
+      console.log("Message vide");
+  
+      if (!errorMessage) {
+        const newErrorMessage = document.createElement("div");
+        newErrorMessage.classList.add("error-message");
+        newErrorMessage.textContent = "Vous devez écrire quelque chose.";
+        messageInput.parentNode.appendChild(newErrorMessage);
+      }
+      return false;
+    } else {
+      console.log("Message non vide");
+  
+      if (errorMessage) {
+        errorMessage.remove();
+      }
+      return true;
+    }
+  }
+  
+  document.querySelector("form").addEventListener("submit", (event) => {
+    const isValidFirstName = firstNameCheck();
+    const isValidLastName = lastNameCheck();
+    const isValidEmail = emailCheck();
+    const isValidMessage = messageCheck();
+  
+    if (!isValidFirstName || !isValidLastName || !isValidEmail || !isValidMessage) {
+      event.preventDefault();
+      return;
+    }
+  
     const firstName = document.getElementById("first_name").value.trim();
     const lastName = document.getElementById("last_name").value.trim();
     const email = document.getElementById("email").value.trim();
     const message = document.getElementById("message").value.trim();
-
+  
     console.log("Prénom:", firstName);
     console.log("Nom:", lastName);
     console.log("Email:", email);
     console.log("Message:", message);
+  
+    // ferme la modale après la soumission d'un formulaire valide
+    closeModal();
+  
+    event.preventDefault(); // Ajouté pour empêcher le rechargement de la page lors de la soumission du formulaire
   });
 
   // Permets de fermer le formulaire avec 'échap'
@@ -60,6 +189,15 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  function resetForm() {
+    const form = document.querySelector("form");
+    form.reset();
+    const errorMessages = document.querySelectorAll(".error-message");
+    errorMessages.forEach((message) => {
+      message.remove();
+    });
+  }
+
   // Permets d'afficher la modale
   function displayModal() {
     console.log("Displaying modal"); 
@@ -73,6 +211,8 @@ document.addEventListener("DOMContentLoaded", function () {
     modal.setAttribute("aria-labelledby", modalHeading.id);
 
     trapFocus(modal);
+    resetForm();
+
 
 // Permets de naviguer dans la modale à l'aide de 'TAB'
     const focusableElements = modal.querySelectorAll(
@@ -84,14 +224,26 @@ document.addEventListener("DOMContentLoaded", function () {
   } 
   
   function closeModal() {
-    console.log("Closing modal"); 
     const modal = document.getElementById("contact_modal");
-    modal.style.display = "none";
+    if (modal) {
+      modal.style.display = "none";
+    }
   }
+  
+  function initModalCloseListener() {
+    const closeBtn = document.getElementById("close_modal");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", closeModal);
+    }
+  }
+  
+  initModalCloseListener();
 
   const closeButton = document.getElementById("close_modal");
   closeButton.setAttribute("role", "button");
   closeButton.setAttribute("aria-label", "close contact form");
+  resetForm();
+
 });
 
 // Mets à jour le nom du photographe dans la modale en utilisant son ID

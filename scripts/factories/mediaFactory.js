@@ -7,15 +7,22 @@ export function getPhotographerFirstNameById(photographers, id) {
 }
 
 // Incrémente les likes d'un médias et mets à jour le total de likes du photographe en lui ajoutant "1"
-function incrementLike(mediaLikes) {
+function toggleLike(mediaLikes) {
   const liked = mediaLikes.getAttribute('data-liked') === 'true';
-  if (!liked) {
-    const likesCountElement = mediaLikes.querySelector('.likes_count');
-    const currentLikes = parseInt(likesCountElement.textContent, 10);
+  const likesCountElement = mediaLikes.querySelector('.likes_count');
+  const currentLikes = parseInt(likesCountElement.textContent, 10);
+
+  if (liked) {
+    likesCountElement.textContent = currentLikes - 1;
+    mediaLikes.setAttribute('data-liked', 'false');
+    updateTotalLikes(-1);
+  } else {
     likesCountElement.textContent = currentLikes + 1;
     mediaLikes.setAttribute('data-liked', 'true');
     updateTotalLikes(1);
   }
+
+  mediaLikes.querySelector('.heart_icon').classList.toggle('liked');
 }
 
 // Mets à jour le nom de total de likes de la page
@@ -113,15 +120,14 @@ export function mediaFactory(data, photographers, index) {
 
     mediaLikes.addEventListener('click', (e) => {
       if (e.target.classList.contains('heart_icon')) {
-        incrementLike(mediaLikes);
+        toggleLike(mediaLikes);
       }
     });
-
-    // Ecouteur pour l'accessibilité
+    
     heartIcon.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        incrementLike(mediaLikes);
+        toggleLike(mediaLikes);
       }
     });
 
